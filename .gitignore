@@ -25,3 +25,5 @@ skills-lock.json
 
 # Vercel
 .vercel/
+
+.vercel

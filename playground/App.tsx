@@ -282,7 +282,7 @@ export function App() {
           subtitle="Cloná el repo y levantá el dev server."
         >
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <CodeSnippet label="1. Install" language="bash" code={`git clone <repo>\nnpm install`} />
+            <CodeSnippet label="1. Install" language="bash" code={`git clone https://github.com/santiagoisra/totalcoin-ds-atelier.git\ncd totalcoin-ds-atelier\nnpm install`} />
             <CodeSnippet label="2. Dev server" language="bash" code="npm run dev" />
             <CodeSnippet label="3. Regenerar tokens desde DTCG" language="bash" code="npm run tokens:generate" />
             <CodeSnippet label="4. Validar Code Connect mappings" language="bash" code="npm run connect:parse" />

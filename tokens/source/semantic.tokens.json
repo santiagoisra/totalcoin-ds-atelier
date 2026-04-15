@@ -1,0 +1,156 @@
+{
+  "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
+  "$description": "Capa Semantic del DS de TotalCoin. Extraida desde Figma collection 'Semantic' (variableSetKey 23456fd1113f87650462cbe9404ae77116d30c20) el 2026-04-15. Esta es la capa que los componentes usan — referencia primitivos de color.tokens.json cuando hay alineacion, o declara valores propios cuando hay drift respecto de las primitivas (ver nota en feedback.error).",
+
+  "brand": {
+    "$description": "Colores de marca. Estado base + variantes (dark/hover/light/subtle/secondary).",
+    "primary": {
+      "$type": "color",
+      "$value": "{color.primary.500}",
+      "$description": "Figma: brand/primary = #003e70 — ALINEADO con color-primary-500."
+    },
+    "primary-dark": {
+      "$type": "color",
+      "$value": "#002c50",
+      "$description": "Figma: brand/primary-dark = color-primary-700. VERIFICADO via 'text/brand' que aparece como bg de la variante Apretado del Boton Standard."
+    },
+    "primary-hover": {
+      "$type": "color",
+      "$value": "#002c50",
+      "$description": "Figma: brand/primary-hover. Hipotesis: mismo valor que primary-dark (#002c50) — la app no tiene mouse hover en mobile, usa el estado Apretado para touch feedback. Verificar en web."
+    },
+    "primary-light": {
+      "$type": "color",
+      "$value": "#b0c3d3",
+      "$description": "Figma: brand/primary-light. Probable = color-primary-100 (no verificado)."
+    },
+    "primary-subtle": {
+      "$type": "color",
+      "$value": "#ebeef3",
+      "$description": "Figma: brand/primary-subtle. Probable = color-primary-50 (no verificado)."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "#f26e25",
+      "$description": "Figma: brand/secondary = #f26e25. NOTA: DIFIERE de color-secondary-500 (#f37d3d) — drift entre capas. El valor canonico brand es #f26e25. Alinear en Figma si corresponde."
+    },
+    "primary-2": {
+      "$type": "color",
+      "$value": "#42689f",
+      "$description": "Figma: Brand / Primario 2. Style (no variable). Second-tier primary, usado en outlines del Boton Secundario."
+    }
+  },
+
+  "text": {
+    "$description": "Colores de texto.",
+    "primary": {
+      "$type": "color",
+      "$value": "#333333",
+      "$description": "Figma: text/primary = #333. Texto principal. NO alineado con neutral scale (neutral-900 es #373737) — drift intencional o error en Figma."
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{color.neutral.500}",
+      "$description": "Figma: text/secondary = #828282. ALINEADO con color-neutral-500."
+    },
+    "tertiary": {
+      "$type": "color",
+      "$value": "#bdbdbd",
+      "$description": "Figma: text/tertiary = #bdbdbd. NO en neutral scale (entre 200 #c6c6c6 y 300 #ababab). Usado para placeholders y disabled text."
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "#bdbdbd",
+      "$description": "Figma: text/disabled. Aun no confirmado valor exacto — TODO drill-down. Hipotesis: = text/tertiary #bdbdbd."
+    },
+    "brand": {
+      "$type": "color",
+      "$value": "#002c50",
+      "$description": "Figma: text/brand = #002c50. VERIFICADO extrayendo variante 'Apretado' del Boton Standard que usa esta variable como bg (unusual pero cierto). Coincide con color-primary-700."
+    },
+    "on-primary": {
+      "$type": "color",
+      "$value": "#f2f2f2",
+      "$description": "Figma: text/on-primary = #f2f2f2. Texto sobre fondos brand/primary (contraste ALTO sobre #003e70)."
+    }
+  },
+
+  "icon": {
+    "$description": "Colores de iconos.",
+    "primary": {
+      "$type": "color",
+      "$value": "#4f4f4f",
+      "$description": "Figma: icon/primary = #4f4f4f. NO en neutral scale — valor unico."
+    }
+  },
+
+  "bg": {
+    "$description": "Backgrounds por contexto.",
+    "app": {
+      "$type": "color",
+      "$value": "{color.primary.50}",
+      "$description": "Figma: bg/app. Aun no confirmado — hipotesis: = primary-50 (#ebeef3), basado en variable 'Brand/color-bg-primary' de Color Styles."
+    },
+    "app-secondary": {
+      "$type": "color",
+      "$value": "#ffffff",
+      "$description": "Figma: bg/app-secondary. Aun no confirmado — hipotesis: blanco puro."
+    },
+    "surface": {
+      "$type": "color",
+      "$value": "#f9f9f9",
+      "$description": "Figma: bg/surface = #f9f9f9. Usado en contenedores (cards, paneles)."
+    },
+    "button": {
+      "$type": "color",
+      "$value": "#fefefe",
+      "$description": "Figma: bg/button = #fefefe. Casi blanco puro. Usado en botones outline/secundario."
+    },
+    "input": {
+      "$type": "color",
+      "$value": "#f2f2f2",
+      "$description": "Figma: bg/input = #f2f2f2. Mismo valor que text/on-primary (reuso semantico)."
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{border.default}",
+      "$description": "Figma: bg/disabled. Aun no confirmado — hipotesis: = border/default #e0e0e0 (el Boton Deshabilitado usa border/default como fill)."
+    }
+  },
+
+  "border": {
+    "default": {
+      "$type": "color",
+      "$value": "#e0e0e0",
+      "$description": "Figma: border/default = #e0e0e0. Usado en todos los bordes neutros comunes."
+    }
+  },
+
+  "focus": {
+    "$description": "Focus ring tokens — NUEVA capa del DS observada en Atomo/Textarea. Representa la transicion del DS hacia un sistema con focus states visibles. Aun no usada en componentes antiguos (Boton, CheckBox, etc).",
+    "ring": {
+      "$type": "color",
+      "$value": "#cbd5e1",
+      "$description": "Figma: focus/ring = #cbd5e1 (slate-300). Outline de focus estandar. Usado como box-shadow spread 3px sobre el borde."
+    },
+    "ringError": {
+      "$type": "color",
+      "$value": "#fca5a5",
+      "$description": "Figma: focus/ring-error = #fca5a5 (red-300). Outline de focus en estado error."
+    }
+  },
+
+  "feedback": {
+    "$description": "Colores de feedback semantico. NOTA: el namespace 'feedback' en Semantic difiere del namespace 'feedback' en color.tokens.json (ese usa brand-named aliases como verde-confirmado). Este es el canonico para componentes.",
+    "success": {
+      "$type": "color",
+      "$value": "{color.green.500}",
+      "$description": "Figma: feedback/success = #00974e. ALINEADO con color-green-500."
+    },
+    "error": {
+      "$type": "color",
+      "$value": "#ff3b30",
+      "$description": "Figma: feedback/error = #ff3b30. **DRIFT**: difiere de color-red-500 (#ff3a30) por 1 digit hex. El valor canonico semantic es #ff3b30 — usar ESTE en componentes, no red-500 directo."
+    }
+  }
+}

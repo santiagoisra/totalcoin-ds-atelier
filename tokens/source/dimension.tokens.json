@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
+  "$description": "Dimension tokens del DS de TotalCoin. Extraido desde Figma (collection 'Bordes y espaciado' + frame 'Grid y espaciado' 44779:59156) el 2026-04-15. La scale (XS..XXL) es compartida entre spacing y radius — en Figma es UNA sola collection con scopes CORNER_RADIUS + WIDTH_HEIGHT + GAP. En DTCG los separamos por claridad: esta escala vive en 'size' como primitivo, y radius.tokens.json + referencias a 'size' resuelven el resto.",
+
+  "size": {
+    "$description": "Scale primitiva de dimensiones. Collection 'Bordes y espaciado' en Figma. Usar para padding, margin, gap, width, height. Mismos tokens se reutilizan en radius.tokens.json.",
+    "xs":  { "$type": "dimension", "$value": "4px",  "$description": "Figma: XS (key 4b445bd3). Borde y espaciado minimo." },
+    "s":   { "$type": "dimension", "$value": "8px",  "$description": "Figma: S  (key 7cf51c37)." },
+    "md":  { "$type": "dimension", "$value": "12px", "$description": "Figma: MD (key b03f7c25). Gap default en mobile." },
+    "l":   { "$type": "dimension", "$value": "16px", "$description": "Figma: L  (key 021ad37c). Gutter mobile, gap tablet." },
+    "xl":  { "$type": "dimension", "$value": "24px", "$description": "Figma: XL (key fe8d968b). Gutter tablet, gap desktop." },
+    "xxl": { "$type": "dimension", "$value": "36px", "$description": "Figma: XXL (key 47ac8ba8). Gutter desktop." }
+  },
+
+  "grid": {
+    "$description": "Configuracion de grid responsive. 3 breakpoints — celulares / tablets / desktop — cada uno con su numero de columnas, gutter (padding horizontal del container) y gap (separacion entre columnas).",
+    "mobile": {
+      "columns":   { "$type": "number",    "$value": 4 },
+      "gutter":    { "$type": "dimension", "$value": "{size.l}",  "$description": "16px" },
+      "gap":       { "$type": "dimension", "$value": "{size.md}", "$description": "12px" }
+    },
+    "tablet": {
+      "columns":   { "$type": "number",    "$value": 8 },
+      "gutter":    { "$type": "dimension", "$value": "{size.xl}", "$description": "24px" },
+      "gap":       { "$type": "dimension", "$value": "{size.l}",  "$description": "16px" }
+    },
+    "desktop": {
+      "columns":   { "$type": "number",    "$value": 12 },
+      "gutter":    { "$type": "dimension", "$value": "{size.xxl}", "$description": "36px" },
+      "gap":       { "$type": "dimension", "$value": "{size.xl}",  "$description": "24px" }
+    }
+  },
+
+  "borderWidth": {
+    "$description": "Grosores de borde. Valor mas usado detectado en componentes del DS.",
+    "default": { "$type": "dimension", "$value": "1px", "$description": "Grosor estandar. Usado en todos los bordes comunes (cards, inputs, dividers)." }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
+  "$description": "Shadow tokens del DS de TotalCoin. Extraido desde frame 'Sombras y Border Radius' (44779:59093) el 2026-04-15. Cuatro tiers — S, MD, XL, NE (Nueva Experiencia). DTCG $type shadow acepta un array de layers para sombras compuestas; MD tiene 2 layers, XL tiene 6 layers (cascada realista), S y NE son single-layer.",
+
+  "shadow": {
+    "xs": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#0000000d",
+        "offsetX": "0px",
+        "offsetY": "1px",
+        "blur": "2px",
+        "spread": "0px"
+      },
+      "$description": "NUEVA en DS-en-transicion. Observada en Atomo/Textarea como 'shadow-xs' (sub-tokens xs/x, xs/y, xs/blur, xs/spread, xs/color). Sombra minima, casi imperceptible — usada en inputs/buttons de la era moderna. rgba(0,0,0,0.05)."
+    },
+    "s": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#00000008",
+        "offsetX": "0px",
+        "offsetY": "4px",
+        "blur": "4px",
+        "spread": "0px"
+      },
+      "$description": "Sombra sutil. Figma: 'Sombra S'. 'Usada para objetos comunes resaltando del fondo.' rgba(0,0,0,0.05) -> hex alpha 0D (pero el valor exacto 0.05 * 255 = 12.75 ~= 0D en hex; usamos la aprox 08 que da 0.03 — ajustar si se prefiere 0D)."
+    },
+    "md": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "#0000001a",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "15px",
+          "spread": "0px"
+        },
+        {
+          "color": "#0000000d",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "4px",
+          "spread": "0px"
+        }
+      ],
+      "$description": "Sombra media compuesta (2 layers). Figma: 'Sombra MD'. 'Usada para objetos comunes seleccionados.' Layer 1: rgba(0,0,0,0.1). Layer 2: rgba(0,0,0,0.05)."
+    },
+    "xl": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "#00000012", "offsetX": "0px", "offsetY": "100px",    "blur": "80px",     "spread": "0px" },
+        { "color": "#0000000d", "offsetX": "0px", "offsetY": "64.815px", "blur": "46.852px", "spread": "0px" },
+        { "color": "#0000000a", "offsetX": "0px", "offsetY": "38.519px", "blur": "25.481px", "spread": "0px" },
+        { "color": "#0000000a", "offsetX": "0px", "offsetY": "20px",     "blur": "13px",     "spread": "0px" },
+        { "color": "#00000008", "offsetX": "0px", "offsetY": "8.148px",  "blur": "6.519px",  "spread": "0px" },
+        { "color": "#00000005", "offsetX": "0px", "offsetY": "1.852px",  "blur": "3.148px",  "spread": "0px" }
+      ],
+      "$description": "Sombra grande realista (6 layers, cascada fisicamente correcta). Figma: 'Sombra XL'. 'Usada para objetos comunmente unicos en la interfaz. Ej. Un login.' Alphas van decreciendo de 0.07 a 0.02."
+    },
+    "ne": {
+      "$type": "shadow",
+      "$value": {
+        "color": "#f26e252e",
+        "offsetX": "0px",
+        "offsetY": "10px",
+        "blur": "50px",
+        "spread": "0px"
+      },
+      "$description": "Sombra naranja de alerta/atencion. Figma: 'Sombra NE' (Nueva Experiencia). 'Usada para objetos comunes que necesitan resaltado especial o llamar la atencion del usuario.' rgba(242, 110, 37, 0.18) — tinted con brand naranja. Unica sombra coloreada del DS."
+    }
+  }
+}

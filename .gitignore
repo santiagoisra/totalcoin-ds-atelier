@@ -1,0 +1,27 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+
+# Build output of Code Connect
+.figma-connect-cache/
+
+# Local tooling (Claude Code, skills manager, agent runners)
+.claude/
+.agents/
+.atl/
+skills-lock.json
+
+# Vercel
+.vercel/

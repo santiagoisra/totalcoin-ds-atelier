@@ -1,0 +1,10 @@
+{
+  "codeConnect": {
+    "parser": "react",
+    "include": ["components/**/*.tsx"],
+    "exclude": ["**/node_modules/**", "**/dist/**"],
+    "importPaths": {
+      "components/*": "@totalcoin/ds"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+/* Shiki emite <pre class="shiki ..."> — le damos padding + scroll horizontal. */
+.shiki {
+  margin: 0 !important;
+  padding: 14px 16px !important;
+  background: transparent !important;
+  overflow-x: auto;
+}
+.shiki code {
+  font-family: inherit;
+}

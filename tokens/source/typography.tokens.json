@@ -1,0 +1,191 @@
+{
+  "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
+  "$description": "Typography tokens del DS de TotalCoin. Extraido desde Figma (frame 'Fuentes de letra' 44970:82278) el 2026-04-15. Estructura: primitivos (family/weight/size/lineHeight) + estilos compuestos ($type typography) que los componen. El DS de TotalCoin usa Text Styles en Figma, NO Variables — el sync de vuelta a Figma requiere actualizar los styles con prefijo 'Brand/'.",
+
+  "typography": {
+    "fontFamily": {
+      "$description": "Familias tipograficas del DS. Incluye fallback sans-serif.",
+      "heading": {
+        "$type": "fontFamily",
+        "$value": ["Nunito", "sans-serif"],
+        "$description": "Escala H (Headings + UI text). Usar para texto general de interfaz."
+      },
+      "number": {
+        "$type": "fontFamily",
+        "$value": ["Montserrat", "sans-serif"],
+        "$description": "Escala N (Numbers). Usar para display de montos, saldos y datos numericos destacados."
+      },
+      "body": {
+        "$type": "fontFamily",
+        "$value": ["Inter", "sans-serif"],
+        "$description": "NUEVA en DS-en-transicion. Vista en Atomo/Textarea como 'font-definitions/font-family-body'. Inter es el default moderno para UI body text. Usar en inputs/controls que migraron al sistema nuevo."
+      }
+    },
+
+    "fontWeight": {
+      "$description": "Pesos usados por el DS. Solo estos 5 valores deben aparecer en componentes.",
+      "regular":   { "$type": "fontWeight", "$value": 400 },
+      "medium":    { "$type": "fontWeight", "$value": 500 },
+      "semibold":  { "$type": "fontWeight", "$value": 600 },
+      "bold":      { "$type": "fontWeight", "$value": 700 },
+      "extrabold": { "$type": "fontWeight", "$value": 800 }
+    },
+
+    "fontSize": {
+      "$description": "Scale numerica en pixeles. Incluye solo los 8 sizes realmente usados por los styles Brand del DS.",
+      "12": { "$type": "dimension", "$value": "12px" },
+      "14": { "$type": "dimension", "$value": "14px" },
+      "16": { "$type": "dimension", "$value": "16px" },
+      "18": { "$type": "dimension", "$value": "18px" },
+      "22": { "$type": "dimension", "$value": "22px" },
+      "24": { "$type": "dimension", "$value": "24px" },
+      "30": { "$type": "dimension", "$value": "30px" },
+      "36": { "$type": "dimension", "$value": "36px" }
+    },
+
+    "lineHeight": {
+      "normal": {
+        "$type": "number",
+        "$value": 1.0,
+        "$description": "Figma 'Auto' line-height. Se mapea a CSS line-height: normal o 1.0 (unitless) segun contexto. Todos los styles Brand del DS usan este valor."
+      }
+    },
+
+    "letterSpacing": {
+      "default": {
+        "$type": "dimension",
+        "$value": "0px",
+        "$description": "Todos los styles Brand usan letter-spacing 0. Token declarado para evitar hardcoded values en componentes."
+      }
+    },
+
+    "heading": {
+      "$description": "Estilos compuestos para la escala H (Nunito). Mapea 1:1 a los Text Styles Brand/H0..H6 en Figma.",
+      "H0": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.extrabold}",
+          "fontSize": "{typography.fontSize.30}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito ExtraBold 30. Figma: Brand/H0."
+      },
+      "H1": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.bold}",
+          "fontSize": "{typography.fontSize.22}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito Bold 22. Figma: Brand / H1."
+      },
+      "H2": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.bold}",
+          "fontSize": "{typography.fontSize.18}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito Bold 18. Figma: Brand / H2."
+      },
+      "H3": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.semibold}",
+          "fontSize": "{typography.fontSize.16}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito SemiBold 16. Figma: Brand / H3."
+      },
+      "H4": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.bold}",
+          "fontSize": "{typography.fontSize.14}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito Bold 14. Figma: Brand/H4."
+      },
+      "H5": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.medium}",
+          "fontSize": "{typography.fontSize.14}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito Medium 14. Figma: Brand / H5."
+      },
+      "H6": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.heading}",
+          "fontWeight": "{typography.fontWeight.regular}",
+          "fontSize": "{typography.fontSize.12}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Nunito Regular 12. Figma: Brand / H6."
+      }
+    },
+
+    "number": {
+      "$description": "Estilos compuestos para la escala N (Montserrat). Usar SOLO para datos numericos destacados (montos, saldos, metricas).",
+      "N1": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.number}",
+          "fontWeight": "{typography.fontWeight.bold}",
+          "fontSize": "{typography.fontSize.36}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Montserrat Bold 36. Figma: Brand / N1. Display grande para montos hero."
+      },
+      "N2": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.number}",
+          "fontWeight": "{typography.fontWeight.bold}",
+          "fontSize": "{typography.fontSize.24}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Montserrat Bold 24. Figma: Brand / N2."
+      },
+      "N3": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.number}",
+          "fontWeight": "{typography.fontWeight.bold}",
+          "fontSize": "{typography.fontSize.14}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Montserrat Bold 14. Figma: Brand / N3."
+      },
+      "N4": {
+        "$type": "typography",
+        "$value": {
+          "fontFamily": "{typography.fontFamily.number}",
+          "fontWeight": "{typography.fontWeight.regular}",
+          "fontSize": "{typography.fontSize.14}",
+          "lineHeight": "{typography.lineHeight.normal}",
+          "letterSpacing": "{typography.letterSpacing.default}"
+        },
+        "$description": "Montserrat Regular 14. Figma: Brand / N4."
+      }
+    }
+  }
+}

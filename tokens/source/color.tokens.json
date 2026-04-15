@@ -1,0 +1,100 @@
+{
+  "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
+  "$description": "Color tokens del DS de TotalCoin. Extraido desde Figma (file y3zmw15iLpdpYwLKSMCpP9, frame 'Colores' 44970:82242) el 2026-04-15. Incluye las 5 escalas primitivas (primary, neutral, secondary, green, red) con 10 shades cada una + 4 feedback aliases. PENDIENTE: extraer collections 'Semantic' (brand/primary, text/primary, icon/primary, etc.) y 'Brand Clients' (multi-brand) que requieren un nodo consumer para ver values.",
+
+  "color": {
+    "primary": {
+      "$description": "Escala primitiva azul — brand primaria de TotalCoin.",
+      "50":  { "$type": "color", "$value": "#ebeef3", "$description": "Contraste AAA sobre texto negro (17.63), 1.19 sobre blanco." },
+      "100": { "$type": "color", "$value": "#b0c3d3", "$description": "AAA sobre negro (11.59)." },
+      "200": { "$type": "color", "$value": "#8aa6bd", "$description": "AAA sobre negro (8.27)." },
+      "300": { "$type": "color", "$value": "#547e9f", "$description": "AA sobre negro (4.86), AA sobre blanco (4.32)." },
+      "400": { "$type": "color", "$value": "#33658d", "$description": "AA sobre negro (3.39), AAA sobre blanco (6.20)." },
+      "500": { "$type": "color", "$value": "#003e70", "$description": "AAA sobre blanco (10.92). Base brand." },
+      "600": { "$type": "color", "$value": "#003866", "$description": "AAA sobre blanco (11.95)." },
+      "700": { "$type": "color", "$value": "#002c50", "$description": "AAA sobre blanco (14.23)." },
+      "800": { "$type": "color", "$value": "#00223e", "$description": "AAA sobre blanco (16.17)." },
+      "900": { "$type": "color", "$value": "#001a2f", "$description": "AAA sobre blanco (17.66). Mas oscuro." }
+    },
+
+    "neutral": {
+      "$description": "Escala primitiva gris.",
+      "50":  { "$type": "color", "$value": "#f3f3f3" },
+      "100": { "$type": "color", "$value": "#d8d8d8" },
+      "200": { "$type": "color", "$value": "#c6c6c6" },
+      "300": { "$type": "color", "$value": "#ababab" },
+      "400": { "$type": "color", "$value": "#9b9b9b" },
+      "500": { "$type": "color", "$value": "#828282", "$description": "AA sobre negro (5.46), AA sobre blanco (3.84)." },
+      "600": { "$type": "color", "$value": "#767676", "$description": "AA sobre ambos — minimo WCAG 4.5:1 (4.62 / 4.54)." },
+      "700": { "$type": "color", "$value": "#5c5c5c" },
+      "800": { "$type": "color", "$value": "#484848" },
+      "900": { "$type": "color", "$value": "#373737" }
+    },
+
+    "secondary": {
+      "$description": "Escala primitiva naranja — brand secundaria de TotalCoin.",
+      "50":  { "$type": "color", "$value": "#fef2ec" },
+      "100": { "$type": "color", "$value": "#fbd7c3" },
+      "200": { "$type": "color", "$value": "#f9c3a6" },
+      "300": { "$type": "color", "$value": "#f7a87d" },
+      "400": { "$type": "color", "$value": "#f59764" },
+      "500": { "$type": "color", "$value": "#f37d3d", "$description": "AAA sobre negro (7.81). Base brand secundaria." },
+      "600": { "$type": "color", "$value": "#dd7238", "$description": "AA sobre negro (6.54), AA sobre blanco (3.21)." },
+      "700": { "$type": "color", "$value": "#ad592b", "$description": "AA sobre negro (4.24), AA sobre blanco (4.95)." },
+      "800": { "$type": "color", "$value": "#864522" },
+      "900": { "$type": "color", "$value": "#66351a" }
+    },
+
+    "green": {
+      "$description": "Escala primitiva verde — used for success / confirm / positive states.",
+      "50":  { "$type": "color", "$value": "#e6f5ed" },
+      "100": { "$type": "color", "$value": "#b0dfc8" },
+      "200": { "$type": "color", "$value": "#8acfae" },
+      "300": { "$type": "color", "$value": "#54b988" },
+      "400": { "$type": "color", "$value": "#33ac71" },
+      "500": { "$type": "color", "$value": "#00974e", "$description": "AA sobre negro (5.54), AA sobre blanco (3.79). Base success." },
+      "600": { "$type": "color", "$value": "#008947", "$description": "AA sobre negro (4.67), AA sobre blanco (4.50)." },
+      "700": { "$type": "color", "$value": "#006b37" },
+      "800": { "$type": "color", "$value": "#00532b" },
+      "900": { "$type": "color", "$value": "#003f21" }
+    },
+
+    "red": {
+      "$description": "Escala primitiva roja — used for error / destructive / negative states.",
+      "50":  { "$type": "color", "$value": "#ffebea" },
+      "100": { "$type": "color", "$value": "#ffc2bf" },
+      "200": { "$type": "color", "$value": "#ffa4a0" },
+      "300": { "$type": "color", "$value": "#ff7b74" },
+      "400": { "$type": "color", "$value": "#ff6159" },
+      "500": { "$type": "color", "$value": "#ff3a30", "$description": "AA sobre negro (5.90), AA sobre blanco (3.56). Base error. Nota: el style 'Brand / Error' en Figma referencia #FF3B30 — hay drift de 1 digit, red-500 primitivo es #FF3A30." },
+      "600": { "$type": "color", "$value": "#e8352c", "$description": "AA sobre negro (4.98), AA sobre blanco (4.22)." },
+      "700": { "$type": "color", "$value": "#b52922", "$description": "AA sobre blanco (6.35)." },
+      "800": { "$type": "color", "$value": "#8c201a" },
+      "900": { "$type": "color", "$value": "#6b1814" }
+    }
+  },
+
+  "feedback": {
+    "$description": "Aliases semanticos brand-named para feedback states. Referencian primitivas color.*.",
+    "verde-confirmado": {
+      "$type": "color",
+      "$value": "{color.green.500}",
+      "$description": "Confirmacion / accion positiva. Etiqueta brand en Figma."
+    },
+    "naranja": {
+      "$type": "color",
+      "$value": "{color.secondary.500}",
+      "$description": "Atencion / advertencia. Etiqueta brand en Figma."
+    },
+    "error": {
+      "$type": "color",
+      "$value": "{color.red.500}",
+      "$description": "Error / accion destructiva. Etiqueta brand en Figma."
+    },
+    "deshabilitado": {
+      "$type": "color",
+      "$value": "#d8e6ff",
+      "$description": "Estado deshabilitado. Valor unico — NO pertenece a ninguna escala primitiva. Vive en la collection Semantic de Figma y probablemente referencia primary-50 o una variante."
+    }
+  }
+}

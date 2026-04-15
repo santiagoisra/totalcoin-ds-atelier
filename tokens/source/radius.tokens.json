@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
+  "$description": "Border radius tokens del DS de TotalCoin. Extraido desde frame 'Sombras y Border Radius' (44779:59093) el 2026-04-15. Referencia a dimension.tokens.json size.* porque la collection Figma 'Bordes y espaciado' es compartida entre spacing y radius. Solo existen 4 tiers de radius (XS..L) — no hay Radio XL ni XXL segun el DS.",
+
+  "radius": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "{size.xs}",
+      "$description": "4px. Figma: Radio XS. 'Casi sin uso, ocasiones especiales que requiera un anuncio semi cuadrado.'"
+    },
+    "s": {
+      "$type": "dimension",
+      "$value": "{size.s}",
+      "$description": "8px. Figma: Radio S. 'Usada para objetos comunes resaltando del fondo.'"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "{size.md}",
+      "$description": "12px. Figma: Radio MD. 'Usada para marcos comunes en general.' Radius default de cards/containers."
+    },
+    "l": {
+      "$type": "dimension",
+      "$value": "{size.l}",
+      "$description": "16px. Figma: Radio L. 'Usada para marcos de fondos que abarquen secciones completas.'"
+    }
+  }
+}

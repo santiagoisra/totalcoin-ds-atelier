@@ -1,0 +1,38 @@
+{
+  "name": "totalcoin-design-system",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Atelier bidireccional Figma <-> codigo del Design System de TotalCoin.",
+  "scripts": {
+    "tokens:pull": "tsx scripts/pull-tokens.ts",
+    "tokens:push": "tsx scripts/push-tokens.ts",
+    "tokens:generate": "tsx scripts/generate-tokens.ts",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 5173",
+    "connect:publish": "figma connect publish",
+    "connect:unpublish": "figma connect unpublish",
+    "connect:parse": "figma connect parse",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@figma/code-connect": "^1.3.4",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^6.0.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "tailwindcss": "^4.2.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^8.0.8"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "shiki": "^4.0.2"
+  }
+}

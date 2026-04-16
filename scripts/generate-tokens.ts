@@ -316,11 +316,19 @@ function emit(atomic: AtomicToken[], compound: CompoundToken[]): string {
   }
 
   // --- shadowValue ---
+  // Keys under "shadow.*" use the last segment (xs, s, md, lg, xl).
+  // Keys outside (ej. "glow.brand") use the full path camelCased (glowBrand).
   const shadows = compound.filter((c) => c.type === "shadow");
   if (shadows.length > 0) {
     lines.push(`export const shadowValue: Record<string, string> = {`);
     for (const c of shadows) {
-      const key = c.pathSegments.slice(-1)[0] ?? "unknown";
+      const segs = c.pathSegments;
+      const key =
+        segs[0] === "shadow" && segs.length === 2 && segs[1] !== undefined
+          ? segs[1]
+          : segs
+              .map((s, i) => (i === 0 || s.length === 0 ? s : s[0]!.toUpperCase() + s.slice(1)))
+              .join("");
       lines.push(`  ${toTsKey(key)}: ${JSON.stringify(emitShadow(c.value))},`);
     }
     lines.push(`};`);

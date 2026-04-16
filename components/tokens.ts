@@ -321,8 +321,9 @@ export const typographyStyle: Record<string, CSSProperties> = {
 
 export const shadowValue: Record<string, string> = {
   xs: "0px 1px 2px 0px #0000000d",
-  s: "0px 4px 4px 0px #00000008",
-  md: "0px 4px 15px 0px #0000001a, 0px 4px 4px 0px #0000000d",
-  xl: "0px 100px 80px 0px #00000012, 0px 64.815px 46.852px 0px #0000000d, 0px 38.519px 25.481px 0px #0000000a, 0px 20px 13px 0px #0000000a, 0px 8.148px 6.519px 0px #00000008, 0px 1.852px 3.148px 0px #00000005",
-  ne: "0px 10px 50px 0px #f26e252e",
+  s: "0px 1px 3px 0px #0000001a, 0px 1px 2px -1px #0000001a",
+  md: "0px 4px 6px -1px #0000001a, 0px 2px 4px -2px #0000001a",
+  lg: "0px 10px 15px -3px #0000001a, 0px 4px 6px -4px #0000001a",
+  xl: "0px 25px 50px -12px #00000040",
+  glowBrand: "0px 10px 50px 0px #f26e252e",
 };

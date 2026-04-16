@@ -6,6 +6,16 @@ Formato: [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Shadow scale realineada (2026-04-16)
+- Shadow scale alineada con atelierdesignsystem.com (Tailwind v3 defaults).
+- `shadow.xs`: sin cambios (ya coincidia).
+- `shadow.s`: reemplazado — antes `0 4px 4px rgba(0,0,0,0.03)` (apenas visible) → ahora default de atelier `0 1px 3px + 0 1px 2px -1px` rgba(0,0,0,0.1). Afecta CardInfo, DatePicker, Modal, Menu (sombra mas presente).
+- `shadow.md`: **NUEVO tier intermedio** (antes el slot estaba vacio entre S y el MD viejo) — valor de atelier `md` (`0 4px 6px -1px + 0 2px 4px -2px`).
+- `shadow.lg`: **NUEVO tier** — toma el slot del MD viejo con valor de atelier `lg` (`0 10px 15px -3px + 0 4px 6px -4px`).
+- `shadow.xl`: reemplazado — cascada de 6 layers eliminada, ahora atelier `2xl` simple (`0 25px 50px -12px rgba(0,0,0,0.25)`).
+- `shadow.ne` → **renombrado a `glow.brand`** (top-level). Mismo valor naranja TotalCoin (rgba(242,110,37,0.18)). Path en `shadowValue` queda `glowBrand`.
+- Script `generate-tokens.ts`: keys de `shadowValue` ahora usan path completo camelCase cuando el token no esta bajo `shadow.*`.
+
 ### Added
 - Scaffold inicial del atelier (tokens DTCG, Code Connect, scripts de sync).
 - `tokens/source/color.tokens.json`: 54 tokens — 5 escalas primitivas (primary, neutral, secondary, green, red, 10 shades c/u) + 4 feedback aliases (verde-confirmado, naranja, error, deshabilitado). Extraido desde Figma frame "Colores" (44970:82242).

@@ -17,8 +17,16 @@ export interface AlertaProps {
   leftIcon?: ReactNode;
   /** Icono derecho (ej. chevron hacia accion). */
   rightIcon?: ReactNode;
-  /** Label textual a la derecha (ej. "Solicitar"). */
+  /** Label textual a la derecha (ej. "Solicitar"). Se renderiza underlined + bold (tipo link/accion). */
   rightLabel?: ReactNode;
+  /** Callback opcional — si esta definido, el rightLabel se renderiza como boton clickeable. */
+  onRightAction?: () => void;
+  /**
+   * Si esta definido, TODA la card es clickeable. Variante "card-as-link":
+   * auto-agrega chevron-right a la derecha, y el rightLabel (si existe) se
+   * muestra sin underline/bold.
+   */
+  onClick?: () => void;
   className?: string;
   style?: CSSProperties;
 }
@@ -50,6 +58,24 @@ function DefaultAlertIcon({ color }: { color: string }) {
   );
 }
 
+function ChevronRightIcon({ color }: { color: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="none"
+      stroke={color}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+
 /**
  * Molecula / Alerta.
  *
@@ -72,39 +98,37 @@ export function Alerta({
   leftIcon,
   rightIcon,
   rightLabel,
+  onRightAction,
+  onClick,
   className,
   style,
 }: AlertaProps): JSX.Element {
   const stripColor = STRIP_COLOR[color];
-  const hasRight = rightIcon || rightLabel;
+  // En variante card-as-link: auto-chevron. Sino: lo que pase el consumidor.
+  const resolvedRightIcon = rightIcon ?? (onClick ? <ChevronRightIcon color={stripColor} /> : undefined);
+  const hasRight = resolvedRightIcon || rightLabel;
 
   return (
     <div
-      role="alert"
+      role={onClick ? "button" : "alert"}
+      tabIndex={onClick ? 0 : undefined}
+      onClick={onClick}
+      onKeyDown={onClick ? (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onClick(); } } : undefined}
       className={className}
       style={{
         display: "flex",
         alignItems: "stretch",
         width: "100%",
         maxWidth: 361,
-        background: token.bg.button,
+        background: stripColor,
         border: `${token.borderWidth.default} solid ${token.border.default}`,
-        borderRadius: token.radius.s,
-        overflow: "hidden",
+        borderRadius: 12,
+        padding: "1px 1px 1px 8px",
+        cursor: onClick ? "pointer" : undefined,
+        outline: "none",
         ...style,
       }}
     >
-      <div
-        aria-hidden="true"
-        style={{
-          width: 9,
-          flexShrink: 0,
-          background: stripColor,
-          margin: "-1px 0 -1px -1px",
-          borderTopLeftRadius: token.radius.s,
-          borderBottomLeftRadius: token.radius.s,
-        }}
-      />
       <div
         style={{
           flex: 1,
@@ -112,7 +136,10 @@ export function Alerta({
           display: "flex",
           alignItems: "center",
           gap: 10,
-          padding: `10px ${token.size.md} 10px ${token.size.md}`,
+          padding: `10px ${token.size.md}`,
+          background: token.bg.button,
+          border: `${token.borderWidth.default} solid ${token.border.default}`,
+          borderRadius: 10,
         }}
       >
         {showLeftIcon && (
@@ -133,28 +160,52 @@ export function Alerta({
         >
           {children}
         </span>
-        {hasRight && (
-          <span
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: token.size.xs,
-              color: stripColor,
-              fontFamily: "Nunito, sans-serif",
-              fontWeight: 500,
-              fontSize: "14px",
-              whiteSpace: "nowrap",
-              flexShrink: 0,
-            }}
-          >
-            {rightLabel}
-            {rightIcon && (
-              <span aria-hidden="true" style={{ display: "inline-flex", width: 24, height: 24 }}>
-                {rightIcon}
-              </span>
-            )}
-          </span>
-        )}
+        {hasRight && (() => {
+          // Si es card-as-link (onClick), label normal + chevron. Sino, label underlined+bold (action).
+          const labelStyle: CSSProperties = onClick
+            ? {
+                fontFamily: "Nunito, sans-serif",
+                fontSize: "14px",
+                fontWeight: 500,
+                color: stripColor,
+              }
+            : {
+                fontFamily: "Nunito, sans-serif",
+                fontSize: "14px",
+                fontWeight: 700,
+                textDecoration: "underline",
+                color: stripColor,
+              };
+          const wrapStyle: CSSProperties = {
+            display: "inline-flex",
+            alignItems: "center",
+            gap: token.size.xs,
+            whiteSpace: "nowrap",
+            flexShrink: 0,
+          };
+          const LabelEl = onRightAction && !onClick ? (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); onRightAction(); }}
+              style={{ ...labelStyle, background: "transparent", border: "none", padding: 0, cursor: "pointer" }}
+            >
+              {rightLabel}
+            </button>
+          ) : (
+            rightLabel && <span style={labelStyle}>{rightLabel}</span>
+          );
+
+          return (
+            <span style={wrapStyle}>
+              {LabelEl}
+              {resolvedRightIcon && (
+                <span aria-hidden="true" style={{ display: "inline-flex", width: 24, height: 24, color: stripColor }}>
+                  {resolvedRightIcon}
+                </span>
+              )}
+            </span>
+          );
+        })()}
       </div>
     </div>
   );

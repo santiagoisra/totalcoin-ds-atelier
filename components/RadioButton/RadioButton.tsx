@@ -1,4 +1,4 @@
-import { forwardRef, useId, type InputHTMLAttributes } from "react";
+import { forwardRef, useId, useState, type InputHTMLAttributes } from "react";
 import { token } from "../tokens.ts";
 
 export interface RadioButtonProps
@@ -11,27 +11,40 @@ export interface RadioButtonProps
 /**
  * Atomo / RadioButton.
  *
- * Figma: master `397:957`. Variantes: `Chekeado` (typo original) × `Enabled`.
- * 25×25 px. Circulo con check icon cuando checked (curioso — no es un dot
- * clasico de radio; el DS eligio reutilizar el patron visual del CheckBox).
+ * Figma: master `397:957`. 25×25 px. 4 estados: unchecked/checked × default/disabled.
+ * El DS reutiliza el patron visual del CheckBox (check icon en vez de dot) — atipico
+ * pero intencional. Focus visible con borde negro grueso al hacer Tab.
  *
- * Implementado como `<input type="radio">` nativo + label visual wrapper para
- * keyboard nav + form integration. Agrupa con `name`.
+ * Disabled:
+ * - unchecked: circulo gris relleno sin borde.
+ * - checked:   circulo gris con check blanco (no brand primary).
  */
 export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
   function RadioButton(
-    { size = 25, checked, disabled = false, ariaLabel, id: idProp, className, style, ...rest },
+    { size = 25, checked, disabled = false, ariaLabel, id: idProp, className, style, onFocus, onBlur, ...rest },
     ref,
   ) {
     const autoId = useId();
     const id = idProp ?? `rb-${autoId}`;
+    const [focused, setFocused] = useState(false);
 
-    const borderColor = disabled
-      ? token.text.tertiary
-      : checked
-        ? token.brand.primary
-        : token.border.default;
-    const bgColor = checked && !disabled ? token.brand.primary : "transparent";
+    let bg: string;
+    let borderColor: string;
+    let borderWidth: number;
+
+    if (disabled) {
+      bg = checked ? "#bdbdbd" : "#e5e5e5";
+      borderColor = "transparent";
+      borderWidth = 0;
+    } else if (checked) {
+      bg = token.brand.primary as string;
+      borderColor = token.brand.primary as string;
+      borderWidth = 1;
+    } else {
+      bg = "transparent";
+      borderColor = focused ? (token.text.primary as string) : (token.border.default as string);
+      borderWidth = focused ? 2 : 1;
+    }
 
     return (
       <label
@@ -39,18 +52,20 @@ export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
         aria-label={ariaLabel}
         className={className}
         style={{
+          position: "relative",
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
           width: size,
           height: size,
           borderRadius: "50%",
-          border: `${token.borderWidth.default} solid ${borderColor}`,
-          background: bgColor,
-          color: token.text.onPrimary,
+          border: `${borderWidth}px solid ${borderColor}`,
+          background: bg,
+          color: "#ffffff",
           cursor: disabled ? "not-allowed" : "pointer",
-          opacity: disabled ? 0.5 : 1,
-          transition: "border-color 120ms ease, background-color 120ms ease",
+          boxShadow: focused && checked && !disabled ? `0 0 0 3px ${token.focus.ring}` : "none",
+          transition: "border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease",
+          flexShrink: 0,
           ...style,
         }}
       >
@@ -61,6 +76,8 @@ export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
           id={id}
           checked={checked}
           disabled={disabled}
+          onFocus={(e) => { setFocused(true); onFocus?.(e); }}
+          onBlur={(e) => { setFocused(false); onBlur?.(e); }}
           style={{
             position: "absolute",
             width: 1,

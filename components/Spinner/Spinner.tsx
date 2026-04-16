@@ -6,7 +6,7 @@ export interface SpinnerProps {
   size?: number | string;
   /** Color del arco. Default token.brand.primary. */
   color?: CSSProperties["color"];
-  /** Grosor del anillo. Default = size/10 (min 2px). */
+  /** Grosor del anillo en px. Default = size/10 (min 2px). */
   thickness?: number;
   /** Duracion de una vuelta en ms. Default 800. */
   duration?: number;
@@ -20,13 +20,13 @@ export interface SpinnerProps {
  * Atomo / Spinner.
  *
  * Figma: master node `47558:1236`. Implementado como PNG estatico en Figma —
- * el code-side usa **Web Animations API** (sin keyframes CSS, sin libs).
+ * el code-side usa **Web Animations API** sobre un SVG con `stroke-linecap="round"`
+ * para que los extremos del arco queden redondeados (match Figma).
  *
  * Por que Web Animations y no `@keyframes`:
- * - Autocontenido: no requiere un stylesheet global ni import extra.
+ * - Autocontenido: no requiere stylesheet global ni import extra.
  * - Pausable/cancelable en tests via `getAnimations()` / `cancel()`.
- * - Honra `prefers-reduced-motion` automaticamente cuando el browser lo aplica a
- *   animations. Si el usuario lo tiene on, se pausa sin codigo extra.
+ * - Honra `prefers-reduced-motion` cuando el browser lo aplica a animations.
  */
 export function Spinner({
   size = 108,
@@ -37,7 +37,7 @@ export function Spinner({
   className,
   style,
 }: SpinnerProps): JSX.Element {
-  const ref = useRef<HTMLSpanElement>(null);
+  const ref = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
     const el = ref.current;
@@ -49,9 +49,13 @@ export function Spinner({
     return () => anim.cancel();
   }, [duration]);
 
-  const sizePx = typeof size === "number" ? size : undefined;
+  const sizeNum = typeof size === "number" ? size : 108;
   const sizeValue = typeof size === "number" ? `${size}px` : size;
-  const borderW = thickness ?? Math.max(2, (sizePx ?? 108) / 10);
+  const strokePx = thickness ?? Math.max(2, sizeNum / 10);
+  const vbStroke = (strokePx * 100) / sizeNum;
+  const r = 50 - vbStroke / 2;
+  const circumference = 2 * Math.PI * r;
+  const arc = circumference * 0.25;
   const spinnerColor = color ?? token.brand.primary;
 
   return (
@@ -66,20 +70,25 @@ export function Spinner({
         ...style,
       }}
     >
-      <span
+      <svg
         ref={ref}
         aria-hidden="true"
-        style={{
-          display: "block",
-          width: "100%",
-          height: "100%",
-          borderRadius: "50%",
-          border: `${borderW}px solid transparent`,
-          borderTopColor: spinnerColor,
-          boxSizing: "border-box",
-          willChange: "transform",
-        }}
-      />
+        viewBox="0 0 100 100"
+        width="100%"
+        height="100%"
+        style={{ display: "block", willChange: "transform", transformOrigin: "center" }}
+      >
+        <circle
+          cx="50"
+          cy="50"
+          r={r}
+          fill="none"
+          stroke={spinnerColor as string}
+          strokeWidth={vbStroke}
+          strokeLinecap="round"
+          strokeDasharray={`${arc} ${circumference}`}
+        />
+      </svg>
     </div>
   );
 }

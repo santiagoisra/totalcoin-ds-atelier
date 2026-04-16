@@ -40,6 +40,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "RadioButton", href: "radiobutton" },
       { label: "StatusPill", href: "statuspill" },
       { label: "Progreso", href: "progreso" },
+      { label: "Slider", href: "slider" },
       { label: "Stepper", href: "stepper" },
     ],
   },

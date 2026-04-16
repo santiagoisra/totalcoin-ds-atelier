@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState, type CSSProperties } from "react";
 import { Separador } from "../components/Separador/Separador.tsx";
 import { Spinner } from "../components/Spinner/Spinner.tsx";
 import { CheckBox } from "../components/CheckBox/CheckBox.tsx";
@@ -14,11 +14,13 @@ import { Tooltip } from "../components/Tooltip/Tooltip.tsx";
 import { Combobox } from "../components/Combobox/Combobox.tsx";
 import { Menu } from "../components/Menu/Menu.tsx";
 import { Icon } from "../components/Icon/Icon.tsx";
-import { ICON_PATHS } from "../components/Icon/icons.ts";
+import { PHOSPHOR_ICONS } from "../components/Icon/phosphor-map.ts";
+import { FIGMA_ICONS } from "../components/Icon/figma-icons.ts";
 import { DatePicker } from "../components/DatePicker/DatePicker.tsx";
 import { Tabla } from "../components/Tabla/Tabla.tsx";
 import { SidebarNav } from "../components/SidebarNav/SidebarNav.tsx";
 import { Progreso } from "../components/Progreso/Progreso.tsx";
+import { Slider } from "../components/Slider/Slider.tsx";
 import { Stepper } from "../components/Stepper/Stepper.tsx";
 import { Modal } from "../components/Modal/Modal.tsx";
 import { token, cssVar, typographyStyle, shadowValue } from "../components/tokens.ts";
@@ -222,21 +224,277 @@ function SpacingRadiusScale() {
 
 function ShadowDemo() {
   const shadows = [
-    { key: "xs", val: shadowValue.xs },
-    { key: "s", val: shadowValue.s },
-    { key: "md", val: shadowValue.md },
-    { key: "xl", val: shadowValue.xl },
-    { key: "ne", val: shadowValue.ne },
+    { label: "shadow.xs", val: shadowValue.xs },
+    { label: "shadow.s", val: shadowValue.s },
+    { label: "shadow.md", val: shadowValue.md },
+    { label: "shadow.lg", val: shadowValue.lg },
+    { label: "shadow.xl", val: shadowValue.xl },
+    { label: "glow.brand", val: shadowValue.glowBrand },
   ];
   return (
     <SubCard>
       {shadows.map((s) => (
-        <div key={s.key} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, margin: 12 }}>
+        <div key={s.label} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, margin: 12 }}>
           <div style={{ width: 88, height: 88, background: "#fff", border: "1px solid var(--pg-border)", borderRadius: 12, boxShadow: s.val }} />
-          <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>shadow.{s.key}</span>
+          <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>{s.label}</span>
         </div>
       ))}
     </SubCard>
+  );
+}
+
+type IconCategory = { title: string; names: readonly string[] };
+
+const ICON_CATEGORIES: readonly IconCategory[] = [
+  {
+    title: "Flechas",
+    names: [
+      "arrow-up", "arrow-down", "arrow-left", "arrow-right",
+      "chevron-up", "chevron-down", "chevron-left", "chevron-right",
+      "transfer",
+    ],
+  },
+  {
+    title: "Transfers & Movimiento de dinero (DS TotalCoin)",
+    names: [
+      "money-in", "money-out", "arrows-transfer", "arrows-transfer-equal",
+      "arrows-transfer-in", "arrows-transfer-out",
+      "transfer-in", "transfer-out", "transfer-circular",
+    ],
+  },
+  {
+    title: "Financiero (DS TotalCoin)",
+    names: [
+      "loan", "credit-adjust", "debit-adjust", "buy", "sell", "pos",
+      "cash", "casino", "pay-button", "paylink", "payment-request",
+    ],
+  },
+  {
+    title: "Brand TotalCoin",
+    names: [
+      "hand-totalcoin", "building-bank", "qrcode",
+    ],
+  },
+  {
+    title: "Simbolos y acciones",
+    names: [
+      "check", "close", "plus", "minus", "x-circle", "circle-check",
+      "info", "alert-triangle", "more-horizontal", "more-vertical", "menu",
+      "search", "filter", "refresh", "copy", "edit", "trash", "share",
+      "link", "download", "upload", "external-link", "eye", "eye-closed",
+    ],
+  },
+  {
+    title: "Siluetas",
+    names: [
+      "user", "users", "user-plus", "heart", "star",
+    ],
+  },
+  {
+    title: "Objetos",
+    names: [
+      "home", "wallet", "credit-card", "dollar", "tag", "calendar", "clock",
+      "file", "folder", "image", "bell", "mail", "phone",
+    ],
+  },
+  {
+    title: "Sistema",
+    names: [
+      "settings", "lock", "unlock", "login", "logout",
+      "moon", "sun", "volume", "volume-off",
+    ],
+  },
+];
+
+function RadioButtonVariantsGrid() {
+  const headerStyle: CSSProperties = {
+    fontFamily: "Inter, system-ui, sans-serif",
+    fontSize: 11,
+    fontWeight: 600,
+    color: "var(--pg-text-muted)",
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
+    padding: "4px 8px",
+    textAlign: "center",
+  };
+  const rowLabelStyle: CSSProperties = { ...headerStyle, textAlign: "right", paddingRight: 12 };
+  const cellStyle: CSSProperties = { display: "flex", alignItems: "center", justifyContent: "center", padding: 8 };
+
+  const rows: Array<{ label: string; disabled: boolean }> = [
+    { label: "default", disabled: false },
+    { label: "disabled", disabled: true },
+  ];
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "auto 1fr 1fr",
+        alignItems: "center",
+        rowGap: 4,
+        columnGap: 4,
+        width: "100%",
+        maxWidth: 320,
+      }}
+    >
+      <span />
+      <span style={headerStyle}>unchecked</span>
+      <span style={headerStyle}>checked</span>
+      {rows.map((row) => (
+        <Fragment key={row.label}>
+          <span style={rowLabelStyle}>{row.label}</span>
+          <div style={cellStyle}>
+            <RadioButton checked={false} disabled={row.disabled} ariaLabel={`${row.label}-off`} />
+          </div>
+          <div style={cellStyle}>
+            <RadioButton checked disabled={row.disabled} ariaLabel={`${row.label}-on`} />
+          </div>
+        </Fragment>
+      ))}
+    </div>
+  );
+}
+
+function ToggleVariantsGrid() {
+  const sizes = ["sm", "md", "lg"] as const;
+  const rows: Array<{ label: string; disabled: boolean }> = [
+    { label: "default", disabled: false },
+    { label: "disabled", disabled: true },
+  ];
+
+  const cellStyle: CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 8,
+  };
+  const headerStyle: CSSProperties = {
+    fontFamily: "Inter, system-ui, sans-serif",
+    fontSize: 11,
+    fontWeight: 600,
+    color: "var(--pg-text-muted)",
+    textTransform: "uppercase",
+    letterSpacing: "0.06em",
+    padding: "4px 8px",
+    textAlign: "center",
+  };
+  const rowLabelStyle: CSSProperties = {
+    ...headerStyle,
+    textAlign: "right",
+    paddingRight: 12,
+  };
+
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "auto repeat(3, 1fr)",
+        alignItems: "center",
+        rowGap: 4,
+        columnGap: 4,
+        width: "100%",
+        maxWidth: 640,
+      }}
+    >
+      <span />
+      {sizes.map((s) => (
+        <span key={s} style={headerStyle}>{s}</span>
+      ))}
+      {rows.map((row) => (
+        <Fragment key={row.label}>
+          <span style={rowLabelStyle}>{row.label}</span>
+          {sizes.map((s) => (
+            <div key={s} style={{ ...cellStyle, gap: 14 }}>
+              <Toggle size={s} checked={false} disabled={row.disabled} ariaLabel={`${s}-${row.label}-off`} />
+              <Toggle size={s} checked disabled={row.disabled} ariaLabel={`${s}-${row.label}-on`} />
+            </div>
+          ))}
+        </Fragment>
+      ))}
+    </div>
+  );
+}
+
+function IconSwatch({ name }: { name: string }) {
+  const [copied, setCopied] = useState(false);
+  const [hover, setHover] = useState(false);
+
+  async function handleCopy(e: React.MouseEvent<HTMLButtonElement>) {
+    try {
+      await navigator.clipboard.writeText(name);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1200);
+      e.currentTarget.blur();
+    } catch {}
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleCopy}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onBlur={() => setHover(false)}
+      title={`Click para copiar: "${name}"`}
+      aria-label={`Copiar nombre del icono ${name}`}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 6,
+        padding: 10,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: hover ? (token.brand.primary as string) : "var(--pg-border)",
+        borderRadius: 8,
+        fontFamily: "Inter, system-ui, sans-serif",
+        fontSize: 11,
+        color: "var(--pg-text-muted)",
+        background: "var(--pg-surface)",
+        cursor: "pointer",
+        position: "relative",
+        outline: "none",
+        transition: "border-color 180ms ease",
+      }}
+    >
+      <Icon name={name as never} size={24} color={token.brand.primary} />
+      <span style={{ textAlign: "center", wordBreak: "break-word", lineHeight: 1.2 }}>{name}</span>
+      {copied && (
+        <span
+          style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "rgba(34, 197, 94, 0.92)",
+            color: "#fff",
+            fontFamily: "Inter, sans-serif",
+            fontSize: 12,
+            fontWeight: 600,
+            borderRadius: 8,
+          }}
+        >
+          ✓ Copiado
+        </span>
+      )}
+    </button>
+  );
+}
+
+function IconCatalog() {
+  return (
+    <>
+      {ICON_CATEGORIES.map((cat) => (
+        <SubCard key={cat.title} title={cat.title}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(84px, 1fr))", gap: 8, width: "100%" }}>
+            {cat.names.map((name) => (
+              <IconSwatch key={name} name={name} />
+            ))}
+          </div>
+        </SubCard>
+      ))}
+    </>
   );
 }
 
@@ -249,6 +507,8 @@ export function App() {
   const [textareaError, setTextareaError] = useState(false);
   const [progress, setProgress] = useState(35);
   const [step, setStep] = useState(2);
+  const [sliderValue, setSliderValue] = useState(10000);
+  const [sliderRange, setSliderRange] = useState<[number, number]>([10000, 10000000]);
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
@@ -341,29 +601,22 @@ export function App() {
           <SpacingRadiusScale />
         </Card>
 
-        <Card id="foundations-shadows" title="Shadows" subtitle="5 tiers: xs (sutil moderno), s/md/xl (escala original), ne (Nueva Experiencia — naranja tinted).">
+        <Card id="foundations-shadows" title="Shadows" subtitle="6 tiers: xs (minima), s/md/lg/xl (escala alineada con atelier Tailwind v3) + glow.brand (naranja TotalCoin para resaltado especial).">
           <ShadowDemo />
         </Card>
 
         {/* ---------- ATOMOS ---------- */}
         <SectionHeading id="atomos" title="Atomos" />
 
-        <Card id="icon" title="Icon" subtitle="Meta-componente con 28 iconos SVG inline. Stroke currentColor, extensible via icons.ts.">
-          <SubCard title="Catálogo (click + Copy abajo para ver el patrón)">
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(80px, 1fr))", gap: 8, width: "100%" }}>
-              {(Object.keys(ICON_PATHS) as Array<keyof typeof ICON_PATHS>).map((name) => (
-                <div key={name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: 10, border: `1px solid ${token.border.default}`, borderRadius: 8, fontFamily: "Inter", fontSize: 11, color: token.text.secondary }}>
-                  <Icon name={name} size={24} color={token.brand.primary} />
-                  <span style={{ textAlign: "center", wordBreak: "break-word" }}>{name}</span>
-                </div>
-              ))}
-            </div>
-          </SubCard>
-          <SubCard title="Variaciones">
+        <Card id="icon" title="Icon" subtitle={`${Object.keys(PHOSPHOR_ICONS).length + Object.keys(FIGMA_ICONS).length} iconos — Phosphor (genericos) + SVGs extraidos del DS de Figma (dominio TotalCoin). currentColor, extensible.`}>
+          <IconCatalog />
+          <SubCard title="Variaciones de tamaño y color">
             <Icon name="check" size={16} color={token.feedback.success} />
             <Icon name="close" size={24} color={token.feedback.error} />
             <Icon name="chevron-right" size={32} color={token.brand.primary} />
             <Icon name="heart" size={48} color={token.feedback.error} />
+            <Icon name="money-in" size={32} color={token.brand.primary} />
+            <Icon name="hand-totalcoin" size={32} color="#f26e25" />
           </SubCard>
           <CodeTabs snippets={snippets.icon} />
         </Card>
@@ -407,22 +660,21 @@ export function App() {
           <CodeTabs snippets={snippets.checkbox} />
         </Card>
 
-        <Card id="toggle" title="Toggle" subtitle="51×31 pill con knob animado (transition 180ms).">
+        <Card id="toggle" title="Toggle" subtitle="Pill con knob animado (180ms). 3 tamaños: sm 34×20, md 51×31 (default, match Figma), lg 68×41. Focus ring al hacer Tab.">
           <SubCard title="Interactivo">
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <Toggle checked={toggle} onCheckedChange={setToggle} ariaLabel="Notif" />
               <span style={{ fontFamily: "Nunito", fontSize: 14 }}>{toggle ? "Encendido" : "Apagado"}</span>
             </div>
           </SubCard>
-          <SubCard title="Estáticos">
-            <Toggle checked disabled ariaLabel="on-disabled" />
-            <Toggle checked={false} disabled ariaLabel="off-disabled" />
+          <SubCard title="Variaciones (size × state)">
+            <ToggleVariantsGrid />
           </SubCard>
           <CodeTabs snippets={snippets.toggle} />
         </Card>
 
-        <Card id="radiobutton" title="RadioButton" subtitle="25×25 con check SVG (el DS reutiliza el patrón del CheckBox, atípico para radios). Input nativo + label wrapper.">
-          <SubCard title="Grupo">
+        <Card id="radiobutton" title="RadioButton" subtitle="25×25 con check SVG (el DS reutiliza el patrón del CheckBox, atípico para radios). Input nativo + label wrapper, focus ring al hacer Tab.">
+          <SubCard title="Grupo interactivo">
             {(["a", "b", "c"] as const).map((v) => (
               <label key={v} style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "Nunito", fontSize: 14, cursor: "pointer" }}>
                 <RadioButton name="demo" value={v} checked={radio === v} onChange={() => setRadio(v)} />
@@ -430,15 +682,20 @@ export function App() {
               </label>
             ))}
           </SubCard>
-          <SubCard title="Disabled">
-            <RadioButton checked disabled ariaLabel="dc" />
-            <RadioButton checked={false} disabled ariaLabel="de" />
+          <SubCard title="Variaciones (state × checked)">
+            <RadioButtonVariantsGrid />
           </SubCard>
           <CodeTabs snippets={snippets.radiobutton} />
         </Card>
 
-        <Card id="statuspill" title="StatusPill" subtitle="4 niveles (low/medium/high/neutral) con label custom + icono opcional.">
-          <SubCard title="Niveles">
+        <Card id="statuspill" title="StatusPill" subtitle="4 niveles (low/medium/high/neutral) con label custom + icono opcional. Bordes fully rounded, padding vertical 6px.">
+          <SubCard title="Con icono">
+            <StatusPill level="low" icon={<Icon name="chevron-down" size={16} />}>Bajo</StatusPill>
+            <StatusPill level="medium" icon={<Icon name="chevron-down" size={16} />}>Medio</StatusPill>
+            <StatusPill level="high" icon={<Icon name="chevron-down" size={16} />}>Crítico</StatusPill>
+            <StatusPill level="neutral" icon={<Icon name="chevron-down" size={16} />}>Neutro</StatusPill>
+          </SubCard>
+          <SubCard title="Sin icono">
             <StatusPill level="low">Bajo</StatusPill>
             <StatusPill level="medium">Medio</StatusPill>
             <StatusPill level="high">Crítico</StatusPill>
@@ -464,6 +721,39 @@ export function App() {
           <CodeTabs snippets={snippets.progreso} />
         </Card>
 
+        <Card id="slider" title="Slider" subtitle="Single o range. Track brand/primary, thumb brand/secondary (naranja). Keyboard nav con flechas. Custom pointer events — no `<input type='range'>`.">
+          <SubCard title="Single">
+            <div style={{ width: 420 }}>
+              <Slider
+                label="Valor"
+                value={sliderValue}
+                onChange={(v) => setSliderValue(v as number)}
+                min={0}
+                max={100000}
+                step={500}
+              />
+            </div>
+          </SubCard>
+          <SubCard title="Range (min / max)">
+            <div style={{ width: 420 }}>
+              <Slider
+                labels={["Min.", "Max."]}
+                value={sliderRange}
+                onChange={(v) => setSliderRange(v as [number, number])}
+                min={10000}
+                max={10000000}
+                step={10000}
+              />
+            </div>
+          </SubCard>
+          <SubCard title="Disabled">
+            <div style={{ width: 360 }}>
+              <Slider value={40} min={0} max={100} disabled showValue={false} />
+            </div>
+          </SubCard>
+          <CodeTabs snippets={snippets.slider} />
+        </Card>
+
         <Card id="stepper" title="Stepper" subtitle="Dots conectados por línea de tiempo. Step activo en brand.primary.">
           <SubCard title={`Step ${step + 1} / 5`}>
             <div style={{ width: 280 }}>
@@ -483,7 +773,7 @@ export function App() {
         <SectionHeading id="moleculas" title="Moleculas" />
 
         <Card id="buttonstandard" title="ButtonStandard" subtitle="~192 variantes Figma → 1 componente con props ortogonales. Playground interactivo abajo — tocá los controles.">
-          <SubCard title="🎛️ Playground interactivo">
+          <SubCard title="Playground interactivo">
             <PropsPlayground
               controls={{
                 variant: { type: "enum", options: ["primary", "secondary", "outline", "tertiary", "danger", "danger-outline"], default: "primary" },
@@ -492,19 +782,23 @@ export function App() {
                 rounded: { type: "boolean", default: false },
                 disabled: { type: "boolean", default: false },
                 pressed: { type: "boolean", default: false },
+                icon: { type: "enum", options: ["none", "heart", "bell", "paper-plane-tilt", "money-in"], default: "heart" },
                 label: { type: "string", default: "Confirmar", placeholder: "Label del botón" },
               }}
               preview={(v) => (
-                <ButtonStandard
-                  variant={v.variant as "primary" | "secondary" | "outline" | "tertiary" | "danger" | "danger-outline"}
-                  size={v.size as "medium" | "small"}
-                  width={v.width as "auto" | "full"}
-                  rounded={v.rounded}
-                  disabled={v.disabled}
-                  pressed={v.pressed}
-                >
-                  {v.label}
-                </ButtonStandard>
+                <div style={{ width: 220 }}>
+                  <ButtonStandard
+                    variant={v.variant as "primary" | "secondary" | "outline" | "tertiary" | "danger" | "danger-outline"}
+                    size={v.size as "medium" | "small"}
+                    width="full"
+                    rounded={v.rounded}
+                    disabled={v.disabled}
+                    pressed={v.pressed}
+                    leftIcon={v.icon !== "none" ? <Icon name={v.icon as never} size={24} /> : undefined}
+                  >
+                    {v.label}
+                  </ButtonStandard>
+                </div>
               )}
               codeFor={(v) => {
                 const props: string[] = [];
@@ -514,24 +808,63 @@ export function App() {
                 if (v.rounded) props.push("rounded");
                 if (v.disabled) props.push("disabled");
                 if (v.pressed) props.push("pressed");
+                if (v.icon !== "none") props.push(`leftIcon={<Icon name="${v.icon}" size={24} />}`);
                 return `<ButtonStandard${props.length ? " " + props.join(" ") : ""}>\n  ${v.label}\n</ButtonStandard>`;
               }}
             />
           </SubCard>
           <SubCard title="Variantes">
-            <ButtonStandard variant="primary">Primario</ButtonStandard>
-            <ButtonStandard variant="primary" pressed>Apretado</ButtonStandard>
-            <ButtonStandard variant="secondary">Secundario</ButtonStandard>
-            <ButtonStandard variant="outline">Outline</ButtonStandard>
-            <ButtonStandard variant="tertiary">Terciario</ButtonStandard>
-            <ButtonStandard variant="danger">Danger</ButtonStandard>
-            <ButtonStandard variant="danger-outline">DangerOutline</ButtonStandard>
-            <ButtonStandard disabled>Deshabilitado</ButtonStandard>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+              {([
+                { variant: "primary", label: "Primario" },
+                { variant: "primary", label: "Apretado", pressed: true },
+                { variant: "secondary", label: "Secundario" },
+                { variant: "outline", label: "Outline" },
+                { variant: "tertiary", label: "Terciario" },
+                { variant: "danger", label: "Danger" },
+                { variant: "danger-outline", label: "DangerOutline" },
+                { variant: "primary", label: "Deshabilitado", disabled: true },
+              ] as const).map((c, i) => (
+                <div key={i} style={{ width: 158 }}>
+                  <ButtonStandard variant={c.variant} width="full" pressed={c.pressed} disabled={c.disabled}>{c.label}</ButtonStandard>
+                </div>
+              ))}
+            </div>
           </SubCard>
           <SubCard title="Sizes & width">
-            <ButtonStandard size="small">Small</ButtonStandard>
-            <ButtonStandard size="medium">Medium</ButtonStandard>
-            <ButtonStandard width="full" rounded>Full + rounded</ButtonStandard>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "flex-start" }}>
+              <div style={{ width: 158 }}>
+                <ButtonStandard size="small" width="full">Small (chico)</ButtonStandard>
+              </div>
+              <div style={{ width: 158 }}>
+                <ButtonStandard size="medium" width="full">Medium (chico)</ButtonStandard>
+              </div>
+              <div style={{ width: 361 }}>
+                <ButtonStandard size="medium" width="full">Medium (grande)</ButtonStandard>
+              </div>
+              <div style={{ width: 361 }}>
+                <ButtonStandard width="full" rounded>Full + rounded</ButtonStandard>
+              </div>
+            </div>
+          </SubCard>
+          <SubCard title="Con iconos">
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "flex-start" }}>
+              <div style={{ width: 158 }}>
+                <ButtonStandard variant="primary" width="full" leftIcon={<Icon name="star" size={24} />}>Botón</ButtonStandard>
+              </div>
+              <div style={{ width: 158 }}>
+                <ButtonStandard variant="primary" width="full" leftIcon={<Icon name="check" size={24} />}>Confirmar</ButtonStandard>
+              </div>
+              <div style={{ width: 220 }}>
+                <ButtonStandard variant="outline" width="full" rightIcon={<Icon name="chevron-right" size={24} />}>Siguiente</ButtonStandard>
+              </div>
+              <div style={{ width: 220 }}>
+                <ButtonStandard variant="secondary" width="full" leftIcon={<Icon name="download" size={24} />}>Descargar</ButtonStandard>
+              </div>
+              <div style={{ width: 180 }}>
+                <ButtonStandard variant="danger" width="full" leftIcon={<Icon name="trash" size={24} />}>Eliminar</ButtonStandard>
+              </div>
+            </div>
           </SubCard>
           <CodeTabs snippets={snippets.buttonstandard} />
         </Card>
@@ -559,13 +892,33 @@ export function App() {
           <CodeTabs snippets={snippets.textarea} />
         </Card>
 
-        <Card id="alerta" title="Alerta" subtitle="4 colores semánticos con strip lateral + icono default + trailing action.">
-          <SubCard>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Card id="alerta" title="Alerta" subtitle="4 colores semánticos con strip lateral + icono default + trailing action (label o botón).">
+          <SubCard title="Sin acción">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12, width: "100%", maxWidth: 780 }}>
               <Alerta color="warning">¡Ya podés solicitar tu tarjeta prepaga sin cargo!</Alerta>
               <Alerta color="success">Transferencia realizada con éxito.</Alerta>
-              <Alerta color="error" rightLabel="Reintentar">No pudimos procesar tu pago.</Alerta>
+              <Alerta color="error">No pudimos procesar tu pago.</Alerta>
               <Alerta color="info" showLeftIcon={false}>Actualizá tu app para la nueva experiencia.</Alerta>
+            </div>
+          </SubCard>
+          <SubCard title="Con acción inline (underlined + bold)">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12, width: "100%", maxWidth: 780 }}>
+              <Alerta color="error" rightLabel="Reintentar" onRightAction={() => alert("Reintentar")}>
+                No pudimos procesar tu pago.
+              </Alerta>
+              <Alerta color="success" rightLabel="Ver detalle" onRightAction={() => alert("Ver detalle")}>
+                Transferencia realizada con éxito.
+              </Alerta>
+            </div>
+          </SubCard>
+          <SubCard title="Card-as-link (toda la card es clickeable → chevron auto)">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 12, width: "100%", maxWidth: 780 }}>
+              <Alerta color="info" onClick={() => alert("Alerta clickeada")}>
+                ¡Ya podés solicitar tu tarjeta prepaga totalcoin sin cargo!
+              </Alerta>
+              <Alerta color="info" rightLabel="Solicitar" onClick={() => alert("Solicitar")}>
+                ¡Ya podés solicitar tu tarjeta prepaga totalcoin sin cargo!
+              </Alerta>
             </div>
           </SubCard>
           <CodeTabs snippets={snippets.alerta} />

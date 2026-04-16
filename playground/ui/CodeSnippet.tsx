@@ -12,6 +12,8 @@ export interface CodeSnippetProps {
   code: string;
   language?: "tsx" | "ts" | "bash" | "json" | "css";
   label?: string;
+  /** Si es true, omite el border + borderRadius propios — usar cuando va anidado (ej. CodeTabs). */
+  embedded?: boolean;
 }
 
 // Highlighter singleton — bundle fijo (5 langs + 1 theme) con JS engine
@@ -28,7 +30,7 @@ const highlighter = createHighlighterCoreSync({
  * Theme github-dark matching el fondo navy del playground.
  * Bundle restringido a los 5 lenguajes usados — ~100kb gzip total.
  */
-export function CodeSnippet({ code, language = "tsx", label }: CodeSnippetProps) {
+export function CodeSnippet({ code, language = "tsx", label, embedded = false }: CodeSnippetProps) {
   const [copied, setCopied] = useState(false);
   const [html, setHtml] = useState<string | null>(null);
 
@@ -53,8 +55,8 @@ export function CodeSnippet({ code, language = "tsx", label }: CodeSnippetProps)
     <div
       style={{
         position: "relative",
-        borderRadius: 10,
-        border: "1px solid #e2e8f0",
+        borderRadius: embedded ? 0 : 10,
+        border: embedded ? "none" : "1px solid #e2e8f0",
         background: "#0d1117",
         overflow: "hidden",
         fontFamily: "'Fira Code', ui-monospace, Consolas, monospace",

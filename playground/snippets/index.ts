@@ -248,6 +248,82 @@ const styles = StyleSheet.create({
 });`,
   },
 
+  slider: {
+    react: `import { Slider } from "@totalcoin/ds";
+import { useState } from "react";
+
+// Single
+const [value, setValue] = useState(10000);
+
+<Slider
+  label="Valor"
+  value={value}
+  onChange={(v) => setValue(v as number)}
+  min={0}
+  max={100000}
+  step={500}
+/>
+
+// Range
+const [range, setRange] = useState<[number, number]>([10000, 10000000]);
+
+<Slider
+  labels={["Min.", "Max."]}
+  value={range}
+  onChange={(v) => setRange(v as [number, number])}
+  min={10000}
+  max={10000000}
+  step={10000}
+/>`,
+    tailwind: `{/* Single — custom pointer handlers omitidos por brevedad, ver source */}
+<div className="w-full">
+  <label className="block text-sm font-semibold text-[#828282] mb-4">Valor</label>
+  <div className="relative w-full h-2.5 bg-[#e0e0e0] rounded-full">
+    <div
+      className="absolute top-0 bottom-0 left-0 bg-[#003e70] rounded-full"
+      style={{ width: \`\${pct}%\` }}
+    />
+    <div
+      role="slider"
+      tabIndex={0}
+      aria-valuemin={0}
+      aria-valuemax={100000}
+      aria-valuenow={value}
+      className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 w-[22px] h-[22px] rounded-full bg-[#f26e25] shadow-sm cursor-grab focus:ring-2 focus:ring-[#cbd5e1] outline-none"
+      style={{ left: \`\${pct}%\` }}
+      onPointerDown={handlePointerDown}
+      onKeyDown={handleKey}
+    />
+  </div>
+  <div className="relative mt-2 h-5 text-sm text-[#828282]">
+    <span
+      className="absolute -translate-x-1/2"
+      style={{ left: \`\${pct}%\` }}
+    >
+      {value.toLocaleString("es-AR")}
+    </span>
+  </div>
+</div>`,
+    reactNative: `import { View, Text, StyleSheet, PanResponder } from "react-native";
+
+// React Native no tiene slider nativo en core; usar @react-native-community/slider
+// o implementar con PanResponder sobre un track custom.
+
+import Slider from "@react-native-community/slider";
+
+<Slider
+  style={{ width: 320, height: 40 }}
+  minimumValue={0}
+  maximumValue={100000}
+  step={500}
+  value={value}
+  onValueChange={setValue}
+  minimumTrackTintColor="#003e70"
+  maximumTrackTintColor="#e0e0e0"
+  thumbTintColor="#f26e25"
+/>`,
+  },
+
   stepper: {
     react: `import { Stepper } from "@totalcoin/ds";
 

@@ -21,6 +21,7 @@ Thumbs.db
 .claude/
 .agents/
 .atl/
+.mcp.json
 skills-lock.json
 
 # Vercel

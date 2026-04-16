@@ -61,7 +61,7 @@ export function CodeTabs({ snippets }: { snippets: ComponentSnippets }) {
       </div>
       <div style={{ background: "#0f172a" }}>
         {/* Re-use CodeSnippet for consistent styling, but no label header (we have tabs) */}
-        <CodeSnippet code={snippets[active]} language={current.language} />
+        <CodeSnippet code={snippets[active]} language={current.language} embedded />
       </div>
     </div>
   );

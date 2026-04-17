@@ -30,22 +30,11 @@ export function LoginScreen() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%", fontFamily: "Nunito, sans-serif" }}>
-      {/* Wordmark "totalcoin" — isologo reemplaza la segunda "o" */}
-      <div style={{ display: "flex", alignItems: "center", gap: 2, marginBottom: 40 }}>
-        <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: 44, color: token.brand.primary, letterSpacing: "-0.04em", lineHeight: 1 }}>
-          totalc
-        </span>
-        <img
-          src="/totalcoin-isologo.svg"
-          alt="totalcoin"
-          width={48}
-          height={48}
-          style={{ display: "block", margin: "0 -2px" }}
-        />
-        <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: 44, color: token.brand.primary, letterSpacing: "-0.04em", lineHeight: 1 }}>
-          in
-        </span>
-      </div>
+      <img
+        src="/logo-totalcoin.svg"
+        alt="totalcoin"
+        style={{ display: "block", height: 56, width: "auto", marginBottom: 40 }}
+      />
 
       <div
         style={{

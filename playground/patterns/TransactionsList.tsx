@@ -64,9 +64,9 @@ export function TransactionsList() {
               </button>
             }
             items={[
-              { label: "Importar CSV", icon: "upload" },
-              { label: "Configurar columnas", icon: "settings" },
-              { label: "Eliminar seleccionadas", icon: "trash", destructive: true, disabled: selected.size === 0 },
+              { label: "Importar CSV", icon: <Icon name="upload" size={18} /> },
+              { label: "Configurar columnas", icon: <Icon name="settings" size={18} /> },
+              { label: "Eliminar seleccionadas", icon: <Icon name="trash" size={18} />, destructive: true, disabled: selected.size === 0 },
             ]}
           />
         </div>

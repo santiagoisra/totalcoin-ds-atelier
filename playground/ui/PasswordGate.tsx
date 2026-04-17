@@ -117,9 +117,9 @@ export function PasswordGate({ children }: { children: ReactNode }) {
         }}
       >
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginBottom: 28 }}>
-          <img src="/totalcoin-isologo.svg" alt="TotalCoin" width={48} height={48} style={{ filter: "brightness(0) invert(1)" }} />
+          <img src="/totalcoin-isologo.svg" alt="totalcoin" width={48} height={48} style={{ filter: "brightness(0) invert(1)" }} />
           <h1 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: "#fff", letterSpacing: "-0.01em" }}>
-            TotalCoin DS · Atelier
+            totalcoin DS · Atelier
           </h1>
           <p style={{ margin: 0, fontSize: 13, color: "#94a3b8", textAlign: "center", lineHeight: 1.5 }}>
             Acceso privado. Ingresá la contraseña del equipo para continuar.

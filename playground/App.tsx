@@ -255,7 +255,7 @@ const ICON_CATEGORIES: readonly IconCategory[] = [
     ],
   },
   {
-    title: "Transfers & Movimiento de dinero (DS TotalCoin)",
+    title: "Transfers & Movimiento de dinero (DS totalcoin)",
     names: [
       "money-in", "money-out", "arrows-transfer", "arrows-transfer-equal",
       "arrows-transfer-in", "arrows-transfer-out",
@@ -263,14 +263,14 @@ const ICON_CATEGORIES: readonly IconCategory[] = [
     ],
   },
   {
-    title: "Financiero (DS TotalCoin)",
+    title: "Financiero (DS totalcoin)",
     names: [
       "loan", "credit-adjust", "debit-adjust", "buy", "sell", "pos",
       "cash", "casino", "pay-button", "paylink", "payment-request",
     ],
   },
   {
-    title: "Brand TotalCoin",
+    title: "Brand totalcoin",
     names: [
       "hand-totalcoin", "building-bank", "qrcode",
     ],
@@ -526,7 +526,7 @@ export function App() {
             <Badge>W3C DTCG</Badge>
           </div>
           <h1 style={{ fontFamily: "Inter, sans-serif", fontSize: 48, fontWeight: 800, margin: "0 0 12px", color: "var(--pg-text)", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-            TotalCoin Design System
+            totalcoin Design System
           </h1>
           <p style={{ fontSize: 18, color: "var(--pg-text-secondary)", maxWidth: 680, margin: "0 0 8px", lineHeight: 1.5 }}>
             Atelier bidireccional entre el Figma del DS y su espejo en código. Tokens DTCG, componentes React tipados, mappings Code Connect. Sin framework de producto — <strong>esto no es una app, es un taller del sistema</strong>.
@@ -601,14 +601,14 @@ export function App() {
           <SpacingRadiusScale />
         </Card>
 
-        <Card id="foundations-shadows" title="Shadows" subtitle="6 tiers: xs (minima), s/md/lg/xl (escala alineada con atelier Tailwind v3) + glow.brand (naranja TotalCoin para resaltado especial).">
+        <Card id="foundations-shadows" title="Shadows" subtitle="6 tiers: xs (minima), s/md/lg/xl (escala alineada con atelier Tailwind v3) + glow.brand (naranja totalcoin para resaltado especial).">
           <ShadowDemo />
         </Card>
 
         {/* ---------- ATOMOS ---------- */}
         <SectionHeading id="atomos" title="Atomos" />
 
-        <Card id="icon" title="Icon" subtitle={`${Object.keys(PHOSPHOR_ICONS).length + Object.keys(FIGMA_ICONS).length} iconos — Phosphor (genericos) + SVGs extraidos del DS de Figma (dominio TotalCoin). currentColor, extensible.`}>
+        <Card id="icon" title="Icon" subtitle={`${Object.keys(PHOSPHOR_ICONS).length + Object.keys(FIGMA_ICONS).length} iconos — Phosphor (genericos) + SVGs extraidos del DS de Figma (dominio totalcoin). currentColor, extensible.`}>
           <IconCatalog />
           <SubCard title="Variaciones de tamaño y color">
             <Icon name="check" size={16} color={token.feedback.success} />
@@ -1082,7 +1082,7 @@ export function App() {
           <CodeTabs snippets={snippets.tabla} />
         </Card>
 
-        <Card id="sidebarnav" title="SidebarNav" subtitle="Sidebar de navegación como el de la app de TotalCoin. Collapsable, con secciones e items.">
+        <Card id="sidebarnav" title="SidebarNav" subtitle="Sidebar de navegación como el de la app de totalcoin. Collapsable, con secciones e items.">
           <SubCard title="Demo (300px alto)">
             <div style={{ height: 300, width: 300, border: `1px solid ${token.border.default}`, borderRadius: 12, overflow: "hidden" }}>
               <SidebarNav
@@ -1111,7 +1111,7 @@ export function App() {
 
         <SectionHeading id="patterns" title="Patterns" subtitle="Ejemplos reales del DS en composición — los 21 componentes en features completas." />
 
-        <Card id="pattern-login" title="Login screen" subtitle="TextField con iconos + CheckBox + ButtonStandard + Alerta + Separador. Tipá algo y dale Ingresar para ver el error state.">
+        <Card id="pattern-login" title="Login screen" subtitle="Wordmark + TextField + password toggle + CheckBox + ButtonStandard + Alerta + Separador. Tipá algo y dale Siguiente para ver el error state.">
           <SubCard>
             <LoginScreen />
           </SubCard>
@@ -1136,7 +1136,7 @@ export function App() {
         </Card>
 
         <div style={{ padding: "48px 0 96px", textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: 12, color: "var(--pg-text-faint)" }}>
-          TotalCoin DS Atelier · 21 componentes · 58 icons · 132 tokens · 4 patterns · dark mode · Generado desde Figma via MCP · Código inline styles, cero libs de UI.
+          totalcoin DS Atelier · 21 componentes · 58 icons · 132 tokens · 4 patterns · dark mode · Generado desde Figma via MCP · Código inline styles, cero libs de UI.
         </div>
       </main>
     </div>

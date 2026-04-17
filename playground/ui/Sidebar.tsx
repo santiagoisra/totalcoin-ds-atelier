@@ -191,13 +191,13 @@ export function Sidebar({ children }: { children?: ReactNode }) {
       <a href="#overview" style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", textDecoration: "none", marginBottom: 8 }}>
         <img
           src="/totalcoin-isologo.svg"
-          alt="TotalCoin"
+          alt="totalcoin"
           width={36}
           height={36}
           style={{ display: "block", flexShrink: 0 }}
         />
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--pg-text)" }}>TotalCoin DS</span>
+          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--pg-text)" }}>totalcoin DS</span>
           <span style={{ fontSize: 11, color: "var(--pg-text-muted)" }}>Atelier v0.1</span>
         </div>
       </a>

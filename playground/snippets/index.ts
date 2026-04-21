@@ -692,6 +692,42 @@ const styles = StyleSheet.create({
 });`,
   },
 
+  daterangepicker: {
+    react: `import { DateRangePicker } from "@totalcoin/ds";
+import { useState } from "react";
+
+const [range, setRange] = useState<{ start?: string; end?: string }>({});
+
+<DateRangePicker
+  value={range}
+  onChange={setRange}
+  months={2}
+  min="2025-01-01"
+  max="2025-12-31"
+/>`,
+    tailwind: `{/* Trigger dual start → end */}
+<button className="inline-flex items-center gap-[10px] min-w-[240px] px-3 py-[10px] bg-[#f9f9f9] border border-[#ababab] rounded-xl font-[Nunito] text-sm text-[#828282]">
+  <span>{range.start ?? "DD/MM/AAAA"}</span>
+  <Icon name="chevron-right" className="text-[#003e70]" />
+  <span>{range.end ?? "DD/MM/AAAA"}</span>
+</button>
+
+{/* Range highlight: pill por fila */}
+<td className="bg-[#b0c3d3] rounded-l-full"> {/* leftEdge */}
+<td className="bg-[#b0c3d3]">               {/* mid */}
+<td className="bg-[#b0c3d3] rounded-r-full"> {/* rightEdge */}`,
+    reactNative: `{/* En RN usar react-native-calendars con markingType="period" */}
+import { Calendar } from "react-native-calendars";
+
+<Calendar
+  markingType="period"
+  markedDates={{
+    "2025-01-02": { startingDay: true, color: "#b0c3d3" },
+    "2025-01-10": { endingDay: true, color: "#b0c3d3" },
+  }}
+/>`,
+  },
+
   datepicker: {
     react: `import { DatePicker } from "@totalcoin/ds";
 import { useState } from "react";

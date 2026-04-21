@@ -63,6 +63,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "CardInfo", href: "cardinfo" },
       { label: "Modal", href: "modal" },
       { label: "DatePicker", href: "datepicker" },
+      { label: "DateRangePicker", href: "daterangepicker" },
       { label: "Tabla", href: "tabla" },
       { label: "SidebarNav", href: "sidebarnav" },
     ],

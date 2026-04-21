@@ -17,6 +17,7 @@ import { Icon } from "../components/Icon/Icon.tsx";
 import { PHOSPHOR_ICONS } from "../components/Icon/phosphor-map.ts";
 import { FIGMA_ICONS } from "../components/Icon/figma-icons.ts";
 import { DatePicker } from "../components/DatePicker/DatePicker.tsx";
+import { DateRangePicker } from "../components/DateRangePicker/DateRangePicker.tsx";
 import { Tabla } from "../components/Tabla/Tabla.tsx";
 import { SidebarNav } from "../components/SidebarNav/SidebarNav.tsx";
 import { Progreso } from "../components/Progreso/Progreso.tsx";
@@ -1132,6 +1133,28 @@ export function App() {
             <DatePicker defaultValue="2026-04-15" min="2026-01-01" max="2026-12-31" />
           </SubCard>
           <CodeTabs snippets={snippets.datepicker} />
+        </Card>
+
+        <Card id="daterangepicker" title="DateRangePicker" subtitle="Trigger dual start → end + calendar popup con selección por rango. Single month o dual side-by-side. Highlight pill con color-primary-100.">
+          <SubCard title="Single month (default)">
+            <DateRangePicker defaultValue={{ start: "2025-01-02", end: "2025-01-10" }} />
+          </SubCard>
+          <SubCard title="Dual month con rango cross-month y footer">
+            <DateRangePicker
+              defaultValue={{ start: "2025-01-23", end: "2025-02-10" }}
+              months={2}
+              footer={
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <span>Filtrar por fecha de creación</span>
+                  <span>Filtrar por fecha de modificación</span>
+                </div>
+              }
+            />
+          </SubCard>
+          <SubCard title="Vacío (sin selección)">
+            <DateRangePicker />
+          </SubCard>
+          <CodeTabs snippets={snippets.daterangepicker} />
         </Card>
 
         <Card id="tabla" title="Tabla" subtitle="Data table tipada genérica. Headers sortables, paginación, selection con checkboxes (indeterminate al parcial), render custom por columna.">

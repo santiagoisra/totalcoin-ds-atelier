@@ -23,6 +23,7 @@ import { Progreso } from "../components/Progreso/Progreso.tsx";
 import { Slider } from "../components/Slider/Slider.tsx";
 import { Stepper } from "../components/Stepper/Stepper.tsx";
 import { Modal } from "../components/Modal/Modal.tsx";
+import { Logo } from "../components/Logo/Logo.tsx";
 import { token, cssVar, typographyStyle, shadowValue } from "../components/tokens.ts";
 import { Sidebar } from "./ui/Sidebar.tsx";
 import { Card, SubCard } from "./ui/Card.tsx";
@@ -603,6 +604,100 @@ export function App() {
 
         <Card id="foundations-shadows" title="Shadows" subtitle="6 tiers: xs (minima), s/md/lg/xl (escala alineada con atelier Tailwind v3) + glow.brand (naranja totalcoin para resaltado especial).">
           <ShadowDemo />
+        </Card>
+
+        <Card id="foundations-logo" title="Logo" subtitle="Logotipo oficial de totalcoin. 7 variantes: 4 logos completos (color/blanco × con/sin slogan) + 3 isotipos (color/blanco/con fondo). Discriminated union — TypeScript bloquea combinaciones invalidas.">
+          <SubCard title="Full — color">
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "var(--pg-card-bg)", border: "1px solid var(--pg-border)", borderRadius: 8 }}>
+                <Logo size={56} />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo /&gt;</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "var(--pg-card-bg)", border: "1px solid var(--pg-border)", borderRadius: 8 }}>
+                <Logo size={56} slogan />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo slogan /&gt;</span>
+            </div>
+          </SubCard>
+          <SubCard title="Full — blanco (sobre fondo oscuro)">
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "#003e70", borderRadius: 8 }}>
+                <Logo size={56} variant="blanco" />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo variant="blanco" /&gt;</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "#003e70", borderRadius: 8 }}>
+                <Logo size={56} variant="blanco" slogan />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo variant="blanco" slogan /&gt;</span>
+            </div>
+          </SubCard>
+          <SubCard title="Isotipo">
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "var(--pg-card-bg)", border: "1px solid var(--pg-border)", borderRadius: 8 }}>
+                <Logo type="iso" size={72} />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo type="iso" /&gt;</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "#003e70", borderRadius: 8 }}>
+                <Logo type="iso" variant="blanco" size={72} />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo type="iso" variant="blanco" /&gt;</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
+              <div style={{ padding: 24, background: "var(--pg-card-bg)", border: "1px solid var(--pg-border)", borderRadius: 8 }}>
+                <Logo type="iso" variant="background" size={72} />
+              </div>
+              <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>&lt;Logo type="iso" variant="background" /&gt;</span>
+            </div>
+          </SubCard>
+          <SubCard title="Size — prop unica (altura en px, ancho auto por viewBox)">
+            <div style={{ display: "flex", alignItems: "flex-end", gap: 24 }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                <Logo size={24} />
+                <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>size=24</span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                <Logo size={40} />
+                <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>size=40 (default)</span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                <Logo size={64} />
+                <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>size=64</span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6 }}>
+                <Logo size={96} />
+                <span style={{ fontFamily: "ui-monospace, monospace", fontSize: 11, color: "var(--pg-text-muted)" }}>size=96</span>
+              </div>
+            </div>
+          </SubCard>
+          <CodeSnippet
+            language="tsx"
+            label="API"
+            code={`import { Logo } from "../components/Logo/Logo.tsx";
+
+// full color (default)
+<Logo />
+<Logo slogan />
+<Logo size={80} />
+
+// full blanco (fondos oscuros)
+<Logo variant="blanco" />
+<Logo variant="blanco" slogan />
+
+// isotipo
+<Logo type="iso" />
+<Logo type="iso" variant="blanco" />
+<Logo type="iso" variant="background" />
+
+// TypeScript bloquea invalidas:
+<Logo type="iso" slogan />          // ERROR — iso no tiene slogan
+<Logo variant="background" />        // ERROR — background solo en iso`}
+          />
         </Card>
 
         {/* ---------- ATOMOS ---------- */}

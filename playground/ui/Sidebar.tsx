@@ -27,6 +27,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "Typography", href: "foundations-typography" },
       { label: "Spacing & Radius", href: "foundations-spacing" },
       { label: "Shadows", href: "foundations-shadows" },
+      { label: "Logo", href: "foundations-logo" },
     ],
   },
   {

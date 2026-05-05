@@ -3,7 +3,6 @@ import { Toggle } from "../../components/Toggle/Toggle.tsx";
 import { RadioButton } from "../../components/RadioButton/RadioButton.tsx";
 import { ButtonStandard } from "../../components/ButtonStandard/ButtonStandard.tsx";
 import { Icon } from "../../components/Icon/Icon.tsx";
-import { CardInfo } from "../../components/CardInfo/CardInfo.tsx";
 import { token } from "../../components/tokens.ts";
 
 export function SettingsPanel() {
@@ -72,11 +71,20 @@ export function SettingsPanel() {
         </div>
       </section>
 
-      <CardInfo>
-        <CardInfo.Row label="Biometría" value={<Toggle checked={biometric} onCheckedChange={setBiometric} ariaLabel="Biometría" />} />
-        <CardInfo.Row label="Plan" value="Pro" />
-        <CardInfo.Row label="Renovación" value="15/05/2026" />
-      </CardInfo>
+      <section style={{ padding: `${token.size.s} ${token.size.md}`, background: token.bg.surface, border: `1px solid ${token.border.default}`, borderRadius: token.radius.s, display: "flex", flexDirection: "column", gap: 3 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: token.size.s }}>
+          <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: 1, color: token.brand.primary }}>Biometría</span>
+          <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: "14px", lineHeight: 1, color: token.text.secondary, textAlign: "right" }}><Toggle checked={biometric} onCheckedChange={setBiometric} ariaLabel="Biometría" /></span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: token.size.s }}>
+          <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: 1, color: token.brand.primary }}>Plan</span>
+          <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: "14px", lineHeight: 1, color: token.text.secondary, textAlign: "right" }}>Pro</span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: token.size.s }}>
+          <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 600, fontSize: "16px", lineHeight: 1, color: token.brand.primary }}>Renovación</span>
+          <span style={{ fontFamily: "Nunito, sans-serif", fontWeight: 700, fontSize: "14px", lineHeight: 1, color: token.text.secondary, textAlign: "right" }}>15/05/2026</span>
+        </div>
+      </section>
 
       <div style={{ display: "flex", gap: 10 }}>
         <ButtonStandard variant="outline" width="full">Cancelar</ButtonStandard>

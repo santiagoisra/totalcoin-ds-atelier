@@ -585,48 +585,61 @@ const styles = StyleSheet.create({
 });`,
   },
 
-  cardinfo: {
-    react: `import { CardInfo } from "@totalcoin/ds";
+  toast: {
+    react: `import { Toast } from "@totalcoin/ds";
 
-{/* Data-driven */}
-<CardInfo rows={[
-  { label: "Razón social", value: "BETWARRIOR" },
-  { label: "DNI / CUIT", value: "284556437" },
-]} />
+{/* Con acciones */}
+<Toast
+  title="Desactivar Billetera"
+  description="¿Estás seguro que querés desactivar la billetera?"
+  onClose={() => {}}
+  actions={{
+    cancel: { label: "Cancelar" },
+    confirm: { label: "Desactivar", variant: "danger" },
+  }}
+/>
 
-{/* Compound */}
-<CardInfo>
-  <CardInfo.Row label="Estado" value={<StatusPill level="low">Activo</StatusPill>} />
-  <CardInfo.Row label="Saldo" value="$ 12.430" />
-</CardInfo>`,
-    tailwind: `<div className="flex flex-col gap-1 w-full max-w-[420px] px-3 py-2 bg-[#f9f9f9] border border-[#e0e0e0] rounded-lg shadow-sm">
-  <div className="flex items-center justify-between gap-2">
-    <span className="font-[Nunito] font-semibold text-base text-[#003e70]">Razón social</span>
-    <span className="font-[Nunito] font-bold text-sm text-[#828282] text-right">BETWARRIOR</span>
+{/* Sin acciones */}
+<Toast
+  title="Desactivar Billetera"
+  description="¿Estás seguro que querés desactivar la billetera?"
+  onClose={() => {}}
+/>`,
+    tailwind: `<div className="relative flex flex-col gap-4 w-full max-w-[580px] px-9 py-6 bg-white rounded-xl shadow-lg">
+  <button className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-md text-[#333] hover:bg-gray-100">
+    <X size={20} />
+  </button>
+  <div className="flex flex-col gap-2">
+    <h3 className="font-[Nunito] font-bold text-lg text-[#333]">Desactivar Billetera</h3>
+    <p className="font-[Nunito] font-semibold text-base text-[#4f4f4f]">¿Estás seguro que querés desactivar la billetera?</p>
   </div>
-  <div className="flex items-center justify-between gap-2">
-    <span className="font-[Nunito] font-semibold text-base text-[#003e70]">DNI / CUIT</span>
-    <span className="font-[Nunito] font-bold text-sm text-[#828282] text-right">284556437</span>
+  <div className="flex justify-end gap-2 mt-2">
+    <button className="px-4 py-2 border border-[#003e70] text-[#003e70] rounded-lg font-bold text-sm">Cancelar</button>
+    <button className="px-4 py-2 bg-[#ff3b30] text-white rounded-lg font-bold text-sm">Desactivar</button>
   </div>
 </div>`,
-    reactNative: `import { View, Text, StyleSheet } from "react-native";
+    reactNative: `import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-<View style={styles.card}>
-  <View style={styles.row}>
-    <Text style={styles.label}>Razón social</Text>
-    <Text style={styles.value}>BETWARRIOR</Text>
-  </View>
-  <View style={styles.row}>
-    <Text style={styles.label}>DNI / CUIT</Text>
-    <Text style={styles.value}>284556437</Text>
+<View style={styles.container}>
+  <TouchableOpacity style={styles.close}>
+    <Text>×</Text>
+  </TouchableOpacity>
+  <Text style={styles.title}>Desactivar Billetera</Text>
+  <Text style={styles.description}>¿Estás seguro?</Text>
+  <View style={styles.actions}>
+    <TouchableOpacity style={styles.cancel}><Text>Cancelar</Text></TouchableOpacity>
+    <TouchableOpacity style={styles.confirm}><Text>Desactivar</Text></TouchableOpacity>
   </View>
 </View>
 
 const styles = StyleSheet.create({
-  card: { gap: 3, maxWidth: 420, paddingHorizontal: 12, paddingVertical: 8, backgroundColor: "#f9f9f9", borderWidth: 1, borderColor: "#e0e0e0", borderRadius: 8 },
-  row: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", gap: 8 },
-  label: { fontFamily: "Nunito", fontWeight: "600", fontSize: 16, color: "#003e70" },
-  value: { fontFamily: "Nunito", fontWeight: "700", fontSize: 14, color: "#828282", textAlign: "right" },
+  container: { padding: 24, backgroundColor: "#fff", borderRadius: 12, gap: 16, maxWidth: 580 },
+  close: { position: "absolute", top: 20, right: 20 },
+  title: { fontFamily: "Nunito", fontWeight: "700", fontSize: 18, color: "#333" },
+  description: { fontFamily: "Nunito", fontWeight: "600", fontSize: 16, color: "#4f4f4f" },
+  actions: { flexDirection: "row", justifyContent: "flex-end", gap: 8, marginTop: 8 },
+  cancel: { paddingHorizontal: 16, paddingVertical: 10, borderWidth: 1, borderColor: "#003e70", borderRadius: 8 },
+  confirm: { paddingHorizontal: 16, paddingVertical: 10, backgroundColor: "#ff3b30", borderRadius: 8 },
 });`,
   },
 

@@ -60,7 +60,7 @@ const NAV_SECTIONS: NavSection[] = [
   {
     title: "Organismos",
     items: [
-      { label: "CardInfo", href: "cardinfo" },
+      { label: "Toast", href: "toast" },
       { label: "Modal", href: "modal" },
       { label: "DatePicker", href: "datepicker" },
       { label: "DateRangePicker", href: "daterangepicker" },

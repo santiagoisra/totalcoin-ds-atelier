@@ -10,7 +10,7 @@ import { Textarea } from "../components/Textarea/Textarea.tsx";
 import { Toggle } from "../components/Toggle/Toggle.tsx";
 import { RadioButton } from "../components/RadioButton/RadioButton.tsx";
 import { Alerta } from "../components/Alerta/Alerta.tsx";
-import { CardInfo } from "../components/CardInfo/CardInfo.tsx";
+import { Toast } from "../components/Toast/Toast.tsx";
 import { Tooltip } from "../components/Tooltip/Tooltip.tsx";
 import { Combobox } from "../components/Combobox/Combobox.tsx";
 import { Menu } from "../components/Menu/Menu.tsx";
@@ -1107,22 +1107,26 @@ export function App() {
         {/* ---------- ORGANISMOS ---------- */}
         <SectionHeading id="organismos" title="Organismos" />
 
-        <Card id="cardinfo" title="CardInfo" subtitle="Primer organismo — container con rows de key/value. Compound pattern (CardInfo.Row) + data-driven (prop rows).">
-          <SubCard title="Data-driven">
-            <CardInfo rows={[
-              { label: "Razón social", value: "BETWARRIOR" },
-              { label: "DNI / CUIT", value: "284556437" },
-              { label: "Estado", value: "Activo" },
-            ]} />
+        <Card id="toast" title="Toast" subtitle="Organismo / Aviso. Contenedor con shadow + título + descripción + cerrar. Opcional: acciones (cancelar + confirmar).">
+          <SubCard title="Con acciones">
+            <Toast
+              title="Desactivar Billetera"
+              description="¿Estás seguro que querés desactivar la billetera de Juan Carlos Pérez? Esta acción impedirá realizar operaciones con esta billetera."
+              onClose={() => {}}
+              actions={{
+                cancel: { label: "Cancelar" },
+                confirm: { label: "Desactivar", variant: "danger" },
+              }}
+            />
           </SubCard>
-          <SubCard title="Compound — con ReactNodes embebidos">
-            <CardInfo>
-              <CardInfo.Row label="Estado" value={<StatusPill level="low">Activo</StatusPill>} />
-              <CardInfo.Row label="Saldo" value={<span style={{ fontFamily: "Montserrat", fontWeight: 700, fontSize: 18 }}>$ 12.430</span>} />
-              <CardInfo.Row label="Notificaciones" value={<Toggle checked onCheckedChange={() => {}} ariaLabel="Notif" />} />
-            </CardInfo>
+          <SubCard title="Sin acciones">
+            <Toast
+              title="Desactivar Billetera"
+              description="¿Estás seguro que querés desactivar la billetera de Juan Carlos Pérez? Esta acción impedirá realizar operaciones con esta billetera."
+              onClose={() => {}}
+            />
           </SubCard>
-          <CodeTabs snippets={snippets.cardinfo} />
+          <CodeTabs snippets={snippets.toast} />
         </Card>
 
         <Card id="modal" title="Modal" subtitle="Overlay con backdrop. ESC + click fuera cierran. Renderiza vía React Portal a document.body.">

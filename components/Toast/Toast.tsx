@@ -131,48 +131,57 @@ export function Toast({
           style={{
             display: "flex",
             justifyContent: "flex-end",
-            gap: 8,
           }}
         >
-          {actions.cancel && (
-            <button
-              type="button"
-              onClick={actions.cancel.onClick}
-              style={{
-                appearance: "none",
-                boxSizing: "border-box",
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 10,
-                height: 45,
-                paddingInline: 10,
-                paddingBlock: 0,
-                fontFamily: "Nunito, sans-serif",
-                fontWeight: 700,
-                fontSize: "14px",
-                lineHeight: 1,
-                borderWidth: 1,
-                borderStyle: "solid",
-                borderColor: "#bdbdbd",
-                background: "#fefefe",
-                color: "#4f4f4f",
-                borderRadius: 8,
-                cursor: "pointer",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {actions.cancel.label}
-            </button>
-          )}
-          {actions.confirm && (
-            <ButtonStandard
-              variant={actions.confirm.variant ?? "primary"}
-              onClick={actions.confirm.onClick}
-            >
-              {actions.confirm.label}
-            </ButtonStandard>
-          )}
+          <div
+            style={{
+              display: "flex",
+              gap: 8,
+              width: 258,
+            }}
+          >
+            {actions.cancel && (
+              <button
+                type="button"
+                onClick={actions.cancel.onClick}
+                style={{
+                  appearance: "none",
+                  boxSizing: "border-box",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  flex: 1,
+                  height: 45,
+                  paddingInline: 10,
+                  paddingBlock: 0,
+                  fontFamily: "Nunito, sans-serif",
+                  fontWeight: 700,
+                  fontSize: "14px",
+                  lineHeight: 1,
+                  borderWidth: 1,
+                  borderStyle: "solid",
+                  borderColor: "#bdbdbd",
+                  background: "#fefefe",
+                  color: "#4f4f4f",
+                  borderRadius: 8,
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {actions.cancel.label}
+              </button>
+            )}
+            {actions.confirm && (
+              <ButtonStandard
+                variant={actions.confirm.variant ?? "primary"}
+                onClick={actions.confirm.onClick}
+                style={{ flex: 1 }}
+              >
+                {actions.confirm.label}
+              </ButtonStandard>
+            )}
+          </div>
         </div>
       )}
     </div>

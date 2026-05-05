@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { token, shadowValue } from "../tokens.ts";
+import { token } from "../tokens.ts";
 import { ButtonStandard } from "../ButtonStandard/ButtonStandard.tsx";
 import { Icon } from "../Icon/Icon.tsx";
 
@@ -33,8 +33,8 @@ export interface ToastProps {
  * - Sin botones: solo título, descripción y X de cerrar
  *
  * Contenedor con shadow doble + border-radius 12px + padding 24px 36px.
- * Posicionamiento: normalmente se usa dentro de un fixed/absolute wrapper
- * centrado o anclado (toast overlay).
+ * Fondo #fefefe (token.bg.button).
+ * Botón Cancelar: fondo #fefefe, borde #bdbdbd, texto #4f4f4f.
  */
 export function Toast({
   title,
@@ -53,13 +53,13 @@ export function Toast({
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        gap: 7,
         width: "100%",
         maxWidth: 580,
         padding: "24px 36px",
-        background: token.bg.surface,
-        borderRadius: token.radius.l,
-        boxShadow: `${shadowValue.s}, 0px 10px 15px -3px rgba(0,0,0,0.1)`,
+        background: "#fefefe",
+        borderRadius: 12,
+        boxShadow: "0px 10px 15px -3px rgba(0,0,0,0.1), 0px 4px 6px -4px rgba(0,0,0,0.1)",
         ...style,
       }}
     >
@@ -98,7 +98,7 @@ export function Toast({
       )}
 
       {/* Content */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: 7, paddingBottom: 16 }}>
         <h3
           style={{
             margin: 0,
@@ -132,16 +132,38 @@ export function Toast({
             display: "flex",
             justifyContent: "flex-end",
             gap: 8,
-            marginTop: 8,
           }}
         >
           {actions.cancel && (
-            <ButtonStandard
-              variant="outline"
+            <button
+              type="button"
               onClick={actions.cancel.onClick}
+              style={{
+                appearance: "none",
+                boxSizing: "border-box",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
+                height: 45,
+                paddingInline: 10,
+                paddingBlock: 0,
+                fontFamily: "Nunito, sans-serif",
+                fontWeight: 700,
+                fontSize: "14px",
+                lineHeight: 1,
+                borderWidth: 1,
+                borderStyle: "solid",
+                borderColor: "#bdbdbd",
+                background: "#fefefe",
+                color: "#4f4f4f",
+                borderRadius: 8,
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
             >
               {actions.cancel.label}
-            </ButtonStandard>
+            </button>
           )}
           {actions.confirm && (
             <ButtonStandard

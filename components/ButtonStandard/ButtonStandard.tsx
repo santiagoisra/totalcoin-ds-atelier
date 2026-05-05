@@ -171,13 +171,13 @@ export function ButtonStandard({
       style={baseStyle}
     >
       {leftIcon && (
-        <span aria-hidden="true" style={{ display: "inline-flex", width: 24, height: 24 }}>
+        <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 24, height: 24 }}>
           {leftIcon}
         </span>
       )}
       {children != null && <span>{children}</span>}
       {rightIcon && (
-        <span aria-hidden="true" style={{ display: "inline-flex", width: 24, height: 24 }}>
+        <span aria-hidden="true" style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: 24, height: 24 }}>
           {rightIcon}
         </span>
       )}

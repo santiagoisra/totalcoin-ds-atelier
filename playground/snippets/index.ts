@@ -198,12 +198,25 @@ const styles = StyleSheet.create({
   },
 
   statuspill: {
-    react: `import { StatusPill } from "@totalcoin/ds";
+    react: `import { StatusPill, StatusPillSelect } from "@totalcoin/ds";
 
+{/* Puro (no interactivo) */}
 <StatusPill level="low">Bajo</StatusPill>
 <StatusPill level="medium">Medio</StatusPill>
 <StatusPill level="high">Crítico</StatusPill>
-<StatusPill level="neutral">Neutro</StatusPill>`,
+<StatusPill level="neutral">Neutro</StatusPill>
+
+{/* Selector interactivo */}
+<StatusPillSelect
+  value="low"
+  options={[
+    { value: "low", label: "Bajo" },
+    { value: "medium", label: "Medio" },
+    { value: "high", label: "Crítico" },
+    { value: "neutral", label: "Neutro" },
+  ]}
+  onChange={(value) => console.log(value)}
+/>`,
     tailwind: `<span className="inline-flex items-center gap-2 px-2 py-0.5 rounded-[16px] bg-[#e6f5ed] text-[#00974e] font-medium text-sm">
   Bajo
 </span>

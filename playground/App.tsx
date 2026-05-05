@@ -2,7 +2,8 @@ import { Fragment, useState, type CSSProperties } from "react";
 import { Separador } from "../components/Separador/Separador.tsx";
 import { Spinner } from "../components/Spinner/Spinner.tsx";
 import { CheckBox } from "../components/CheckBox/CheckBox.tsx";
-import { StatusPill } from "../components/StatusPill/StatusPill.tsx";
+import { StatusPill, type Criticality } from "../components/StatusPill/StatusPill.tsx";
+import { StatusPillSelect } from "../components/StatusPill/StatusPillSelect.tsx";
 import { ButtonStandard } from "../components/ButtonStandard/ButtonStandard.tsx";
 import { TextField } from "../components/TextField/TextField.tsx";
 import { Textarea } from "../components/Textarea/Textarea.tsx";
@@ -512,6 +513,12 @@ export function App() {
   const [sliderValue, setSliderValue] = useState(10000);
   const [sliderRange, setSliderRange] = useState<[number, number]>([10000, 10000000]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [statusPillValues, setStatusPillValues] = useState<Record<Criticality, Criticality>>({
+    low: "low",
+    medium: "medium",
+    high: "high",
+    neutral: "neutral",
+  });
 
   return (
     <div style={{ minHeight: "100vh", background: "var(--pg-canvas)", fontFamily: "Inter, sans-serif" }}>
@@ -785,11 +792,29 @@ export function App() {
         </Card>
 
         <Card id="statuspill" title="StatusPill" subtitle="4 niveles (low/medium/high/neutral) con label custom + icono opcional. Bordes fully rounded, padding vertical 6px.">
-          <SubCard title="Con icono">
-            <StatusPill level="low" icon={<Icon name="chevron-down" size={16} />}>Bajo</StatusPill>
-            <StatusPill level="medium" icon={<Icon name="chevron-down" size={16} />}>Medio</StatusPill>
-            <StatusPill level="high" icon={<Icon name="chevron-down" size={16} />}>Crítico</StatusPill>
-            <StatusPill level="neutral" icon={<Icon name="chevron-down" size={16} />}>Neutro</StatusPill>
+          <SubCard title="Con icono (interactivo)">
+            {(
+              [
+                { key: "low" as Criticality, label: "Bajo" },
+                { key: "medium" as Criticality, label: "Medio" },
+                { key: "high" as Criticality, label: "Crítico" },
+                { key: "neutral" as Criticality, label: "Neutro" },
+              ] as const
+            ).map(({ key, label }) => (
+              <StatusPillSelect
+                key={key}
+                value={statusPillValues[key]}
+                options={[
+                  { value: "low", label: "Bajo" },
+                  { value: "medium", label: "Medio" },
+                  { value: "high", label: "Crítico" },
+                  { value: "neutral", label: "Neutro" },
+                ]}
+                onChange={(value) =>
+                  setStatusPillValues((prev) => ({ ...prev, [key]: value }))
+                }
+              />
+            ))}
           </SubCard>
           <SubCard title="Sin icono">
             <StatusPill level="low">Bajo</StatusPill>

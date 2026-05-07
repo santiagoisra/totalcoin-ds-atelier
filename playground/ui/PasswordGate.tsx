@@ -187,8 +187,6 @@ export function PasswordGate({ children }: { children: ReactNode }) {
 
         <p style={{ margin: "24px 0 0", fontSize: 11, color: "#64748b", textAlign: "center", lineHeight: 1.5 }}>
           Esta sesión se guarda por 30 días en tu navegador.
-          <br />
-          Si necesitás la contraseña, pedila en el canal <strong>#design-system</strong>.
         </p>
       </form>
     </div>

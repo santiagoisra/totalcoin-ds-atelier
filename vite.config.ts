@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { assetsManifestPlugin } from "./vite-plugin-assets-manifest.ts";
 
 export default defineConfig({
   root: "playground",
   publicDir: "../public",
-  plugins: [react()],
+  plugins: [react(), assetsManifestPlugin()],
   build: {
     // Output al root del repo — Vercel busca ahi por default.
     outDir: "../dist",

@@ -39,6 +39,8 @@ import { LoginScreen } from "./patterns/LoginScreen.tsx";
 import { TransactionsList } from "./patterns/TransactionsList.tsx";
 import { SettingsPanel } from "./patterns/SettingsPanel.tsx";
 import { OnboardingFlow } from "./patterns/OnboardingFlow.tsx";
+import { AssetGallery } from "./ui/AssetGallery.tsx";
+import assetsManifest from "virtual:assets-manifest";
 
 // ---------- helpers ----------
 
@@ -513,6 +515,7 @@ export function App() {
   const [sliderValue, setSliderValue] = useState(10000);
   const [sliderRange, setSliderRange] = useState<[number, number]>([10000, 10000000]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [assetsOpen, setAssetsOpen] = useState(false);
   const [statusPillValues, setStatusPillValues] = useState<Record<Criticality, Criticality>>({
     low: "low",
     medium: "medium",
@@ -612,6 +615,23 @@ export function App() {
 
         <Card id="foundations-shadows" title="Shadows" subtitle="6 tiers: xs (minima), s/md/lg/xl (escala alineada con atelier Tailwind v3) + glow.brand (naranja totalcoin para resaltado especial).">
           <ShadowDemo />
+        </Card>
+
+        <Card id="foundations-assets" title="Assets" subtitle={`${(assetsManifest as unknown as Array<{name: string}>).length} ilustraciones SVG del DS — storyset, iconos ilustrativos e imágenes decorativas. Agregá SVGs a public/assets/ y aparecen automáticamente.`}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
+            <div>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 14, color: "var(--pg-text)" }}>
+                Ilustraciones del design system
+              </div>
+              <div style={{ fontFamily: "Inter, sans-serif", fontSize: 12, color: "var(--pg-text-muted)", marginTop: 2 }}>
+                Gift cards, wallets, QR, avatares, ilustraciones de estado vacío y más.
+              </div>
+            </div>
+            <ButtonStandard variant="primary" onClick={() => setAssetsOpen(true)}>
+              Ver assets →
+            </ButtonStandard>
+          </div>
+          <AssetGallery open={assetsOpen} onClose={() => setAssetsOpen(false)} />
         </Card>
 
         <Card id="foundations-logo" title="Logo" subtitle="Logotipo oficial de totalcoin. 7 variantes: 4 logos completos (color/blanco × con/sin slogan) + 3 isotipos (color/blanco/con fondo). Discriminated union — TypeScript bloquea combinaciones invalidas.">
@@ -1283,7 +1303,7 @@ export function App() {
         </Card>
 
         <div style={{ padding: "48px 0 96px", textAlign: "center", fontFamily: "Inter, sans-serif", fontSize: 12, color: "var(--pg-text-faint)" }}>
-          totalcoin DS Atelier · 21 componentes · 58 icons · 132 tokens · 4 patterns · dark mode · Generado desde Figma via MCP · Código inline styles, cero libs de UI.
+          totalcoin DS Atelier · 21 componentes · 58 icons · 132 tokens · 4 patterns · 31 assets · dark mode · Generado desde Figma via MCP · Código inline styles, cero libs de UI.
         </div>
       </main>
     </div>

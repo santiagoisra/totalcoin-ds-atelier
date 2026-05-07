@@ -27,6 +27,7 @@ const NAV_SECTIONS: NavSection[] = [
       { label: "Typography", href: "foundations-typography" },
       { label: "Spacing & Radius", href: "foundations-spacing" },
       { label: "Shadows", href: "foundations-shadows" },
+      { label: "Assets", href: "foundations-assets" },
       { label: "Logo", href: "foundations-logo" },
     ],
   },
@@ -273,7 +274,7 @@ export function Sidebar({ children }: { children?: ReactNode }) {
       <ThemeToggle />
 
       <div style={{ borderTop: "1px solid var(--pg-border)", paddingTop: 12, fontSize: 11, color: "var(--pg-text-muted)" }}>
-        21 componentes · 58 iconos · 132 tokens · 4 patterns
+        21 componentes · 58 iconos · 132 tokens · 4 patterns · 31 assets
       </div>
 
       {children}

@@ -112,9 +112,8 @@ function getPalette(variant: ButtonVariant, pressed: boolean): Palette {
  * - slots para leftIcon/rightIcon
  *
  * Fonts: Nunito Bold 14 (Figma text style `Brand/H4`).
- * Padding: 10px literal — Figma lo usa asi, NO corresponde a ningun token
- * del DS (scale tiene 8 y 12, no 10). TODO: alinear en Figma o agregar token
- * `size.button-padding` si el drift molesta.
+ * Padding: token.size.md (12px) — alineado con la escala de espaciado del DS.
+ * Antes usaba 10px literal que no correspondia a ningun token; corregido 2026-05-11.
  */
 export function ButtonStandard({
   variant = "primary",
@@ -141,7 +140,7 @@ export function ButtonStandard({
     justifyContent: "center",
     gap: 10,
     height,
-    paddingInline: 10,
+    paddingInline: token.size.md,
     paddingBlock: 0,
     width: width === "full" ? "100%" : undefined,
     fontFamily: "Nunito, sans-serif",

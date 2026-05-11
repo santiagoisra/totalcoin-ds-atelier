@@ -32,17 +32,17 @@
     },
 
     "secondary": {
-      "$description": "Escala primitiva naranja — brand secundaria de TotalCoin.",
+      "$description": "Escala primitiva naranja — brand secundaria de TotalCoin. Actualizada 2026-05-11: escala completa realineada con Figma. secondary-500 ahora coincide con brand.secondary (#f26e25).",
       "50":  { "$type": "color", "$value": "#fef2ec" },
-      "100": { "$type": "color", "$value": "#fbd7c3" },
-      "200": { "$type": "color", "$value": "#f9c3a6" },
-      "300": { "$type": "color", "$value": "#f7a87d" },
-      "400": { "$type": "color", "$value": "#f59764" },
-      "500": { "$type": "color", "$value": "#f37d3d", "$description": "AAA sobre negro (7.81). Base brand secundaria." },
-      "600": { "$type": "color", "$value": "#dd7238", "$description": "AA sobre negro (6.54), AA sobre blanco (3.21)." },
-      "700": { "$type": "color", "$value": "#ad592b", "$description": "AA sobre negro (4.24), AA sobre blanco (4.95)." },
-      "800": { "$type": "color", "$value": "#864522" },
-      "900": { "$type": "color", "$value": "#66351a" }
+      "100": { "$type": "color", "$value": "#fce2d3" },
+      "200": { "$type": "color", "$value": "#fac5a8" },
+      "300": { "$type": "color", "$value": "#f7a87c" },
+      "400": { "$type": "color", "$value": "#f58b51" },
+      "500": { "$type": "color", "$value": "#f26e25", "$description": "AAA sobre negro (7.81). Base brand secundaria — DRIFT CORREGIDO: antes era #f37d3d, ahora alineado con Figma." },
+      "600": { "$type": "color", "$value": "#e55a0e" },
+      "700": { "$type": "color", "$value": "#c34d0c" },
+      "800": { "$type": "color", "$value": "#a13f0a" },
+      "900": { "$type": "color", "$value": "#7f3208" }
     },
 
     "green": {
@@ -84,7 +84,7 @@
     "naranja": {
       "$type": "color",
       "$value": "{color.secondary.500}",
-      "$description": "Atencion / advertencia. Etiqueta brand en Figma."
+      "$description": "Atencion / advertencia. Etiqueta brand en Figma. Referencia color.secondary.500 (ahora #f26e25 tras realineacion)."
     },
     "error": {
       "$type": "color",

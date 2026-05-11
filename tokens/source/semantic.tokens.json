@@ -31,8 +31,8 @@
     },
     "secondary": {
       "$type": "color",
-      "$value": "#f26e25",
-      "$description": "Figma: brand/secondary = #f26e25. NOTA: DIFIERE de color-secondary-500 (#f37d3d) — drift entre capas. El valor canonico brand es #f26e25. Alinear en Figma si corresponde."
+      "$value": "{color.secondary.500}",
+      "$description": "Figma: brand/secondary. DRIFT CORREGIDO 2026-05-11: ahora referencia color.secondary.500 directamente. La escala primitiva fue actualizada para que secondary-500 = #f26e25 = brand.secondary."
     },
     "primary-2": {
       "$type": "color",

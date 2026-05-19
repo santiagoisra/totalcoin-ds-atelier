@@ -28,3 +28,6 @@ skills-lock.json
 .vercel/
 
 .vercel
+
+# Worktrees
+.worktrees/

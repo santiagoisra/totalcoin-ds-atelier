@@ -182,7 +182,7 @@ export function Slider({
         outline: "none",
       }}
       onFocus={(e) => {
-        if (!disabled) e.currentTarget.style.boxShadow = `0 0 0 3px ${token.focus.ring}, ${shadowValue.xs}`;
+        if (!disabled) e.currentTarget.style.boxShadow = `0 0 0 3px ${token.brand.primary}, ${shadowValue.xs}`;
       }}
       onBlur={(e) => { e.currentTarget.style.boxShadow = shadowValue.xs ?? "none"; }}
     />

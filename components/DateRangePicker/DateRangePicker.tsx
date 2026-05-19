@@ -34,7 +34,7 @@ const MONTHS_ES = [
 ];
 const MONTHS_ES_SHORT = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
 
-const RANGE_BG = cssVar["color-primary-100"]; // #b0c3d3
+const RANGE_BG = cssVar["brand-color-primary-100"];
 
 function parseIso(iso: string | undefined): Date | null {
   if (!iso) return null;
@@ -389,7 +389,7 @@ function Trigger({
         minWidth: 240,
         padding: compact ? "8px 12px" : "10px 12px",
         background: token.bg.surface,
-        border: `${token.borderWidth.default} solid ${cssVar["color-neutral-300"]}`,
+        border: `${token.borderWidth.default} solid ${cssVar["brand-color-grey-4"]}`,
         borderRadius: token.radius.md,
         cursor: disabled ? "not-allowed" : readOnly ? "pointer" : "text",
         opacity: disabled ? 0.5 : 1,

@@ -27,10 +27,10 @@ interface PillPalette {
 }
 
 const palette: Record<Criticality, PillPalette> = {
-  low:     { bg: token.color.green[50],     fg: token.color.green[500] },
-  medium:  { bg: token.color.secondary[50], fg: token.color.secondary[500] },
-  high:    { bg: token.color.red[50],       fg: token.color.red[500] },
-  neutral: { bg: token.color.primary[50],   fg: token.brand.primary },
+  low:     { bg: `color-mix(in srgb, ${token.feedback.success} 15%, white)`, fg: token.feedback.success },
+  medium:  { bg: token.Brand.colorSecondary50,                                fg: token.Brand.colorSecondary500 },
+  high:    { bg: `color-mix(in srgb, ${token.feedback.error} 15%, white)`,   fg: token.feedback.error },
+  neutral: { bg: token.Brand.colorPrimary50,                                  fg: token.brand.primary },
 };
 
 /**
@@ -38,14 +38,11 @@ const palette: Record<Criticality, PillPalette> = {
  *
  * Figma: master `47635:1276`. 4 criticidades x 2 (con/sin icono) = 8 variantes.
  *
- * Los colores de cada criticidad mapean a primitivos del DS (green/secondary/
- * red/primary scales). Se uso `color.*.50` y `color.*.500` en vez de layers
- * semantic porque el DS no expone tokens semantic especificos para "status
- * pill" — los pills usan las primitivas directo.
- *
- * Drift notado: el Pill Neutra en Figma tiene bg `#e6ecf1` (style legacy
- * "Color-primary / color-primary-50") mientras que color-primary-50 como
- * variable es `#ebeef3`. Aca usamos el canonico `color.primary.50`.
+ * Los colores usan tokens semánticos del DS Semantic Layer:
+ * - low   → feedback.success  (confirm, verde)
+ * - medium → brand.secondary  (naranja, con escala 50/500)
+ * - high  → feedback.error    (error, rojo)
+ * - neutral → brand.primary   (azul, con escala 50/500)
  */
 export function StatusPill({
   level,

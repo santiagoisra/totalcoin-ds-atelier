@@ -434,7 +434,7 @@ function writeTokenFile(
 // --------------------------------------------------------------
 
 async function main(): Promise<void> {
-  const { dryRun, mode, input, forceRest } = parseArgs();
+  const { dryRun, mode, input, forceRest, forceBridge } = parseArgs();
 
   if (dryRun) console.log("[pull] DRY RUN — no se escribirán archivos");
   if (mode) console.log(`[pull] Modo forzado: ${mode}`);

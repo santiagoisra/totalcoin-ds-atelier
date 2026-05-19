@@ -80,7 +80,7 @@ export const Toggle = forwardRef<HTMLButtonElement, ToggleProps>(
         }}
         onFocus={(e) => {
           if (!disabled) {
-            e.currentTarget.style.boxShadow = `0 0 0 3px ${token.focus.ring}`;
+            e.currentTarget.style.boxShadow = `0 0 0 3px ${token.brand.primary}`;
           }
           rest.onFocus?.(e);
         }}

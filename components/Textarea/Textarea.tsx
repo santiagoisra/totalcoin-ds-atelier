@@ -59,7 +59,7 @@ export const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         ? token.text.secondary
         : token.bg.input;
 
-    const focusRingColor = error ? token.focus.ringError : token.focus.ring;
+    const focusRingColor = error ? token.feedback.error : token.brand.primary;
     const focusRing = focused ? `, 0 0 0 3px ${focusRingColor}` : "";
     const boxShadow = disabled ? undefined : `${shadowValue.xs}${focusRing}`;
 

@@ -63,7 +63,7 @@ export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
           background: bg,
           color: "#ffffff",
           cursor: disabled ? "not-allowed" : "pointer",
-          boxShadow: focused && checked && !disabled ? `0 0 0 3px ${token.focus.ring}` : "none",
+          boxShadow: focused && checked && !disabled ? `0 0 0 3px ${token.brand.primary}` : "none",
           transition: "border-color 120ms ease, background-color 120ms ease, box-shadow 120ms ease",
           flexShrink: 0,
           ...style,

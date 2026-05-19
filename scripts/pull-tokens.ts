@@ -191,6 +191,15 @@ function parseInputJson(raw: string): FigmaVariablesResponse {
 
   const obj = parsed as Record<string, unknown>;
 
+  // Detectar formato figma_execute MCP: tiene "result" (string con JSON escapado)
+  if (typeof obj["result"] === "string" && obj["success"] === true) {
+    console.log("[pull] Formato detectado: figma_execute MCP (result wrapper)");
+    const inner = JSON.parse(obj["result"] as string);
+    if (Array.isArray(inner["variables"]) && Array.isArray(inner["variableCollections"])) {
+      return bridgeToApiResponse(inner as unknown as BridgeData);
+    }
+  }
+
   // Detectar formato Bridge: tiene "variables" (array) y "variableCollections" (array)
   if (Array.isArray(obj["variables"]) && Array.isArray(obj["variableCollections"])) {
     console.log("[pull] Formato detectado: Desktop Bridge (arrays)");
@@ -453,25 +462,19 @@ async function main(): Promise<void> {
     console.log(`[pull] Leyendo desde archivo: ${input}`);
     const raw = fs.readFileSync(input, "utf-8");
     response = parseInputJson(raw);
+  } else if (forceBridge) {
+    // Transport: Desktop Bridge (explícito con --bridge)
+    console.log("[pull] Modo Desktop Bridge");
+    response = await fetchViaBridge();
   } else if (!process.stdin.isTTY) {
     // Transport: stdin (pipe)
     console.log("[pull] Leyendo desde stdin...");
     const raw = await readJsonFromStdin();
     response = parseInputJson(raw);
-  } else if (forceBridge || !input) {
-    // Transport: Desktop Bridge (default cuando no hay --input ni pipe)
+  } else {
+    // Transport: Desktop Bridge (default en terminal real)
     console.log("[pull] Modo Desktop Bridge");
     response = await fetchViaBridge();
-  } else {
-    console.error(
-      "\n[pull] ERROR: No se proporcionaron datos de Figma.\n\n" +
-      "Opciones:\n" +
-      "  1. Desktop Bridge (default): npx tsx scripts/pull-tokens.ts\n" +
-      "  2. Archivo JSON:             npx tsx scripts/pull-tokens.ts --input data.json\n" +
-      "  3. Pipear JSON:              cat data.json | npx tsx scripts/pull-tokens.ts\n" +
-      "  4. REST API (Enterprise):    npx tsx scripts/pull-tokens.ts --rest\n",
-    );
-    process.exit(1);
   }
 
   const collCount = Object.keys(response.meta.variableCollections).length;

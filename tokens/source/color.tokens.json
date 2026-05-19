@@ -58,6 +58,7 @@
       "800": { "$type": "color", "$value": "#00532b" },
       "900": { "$type": "color", "$value": "#003f21" }
     },
+<<<<<<< HEAD
 
     "red": {
       "$description": "Escala primitiva roja — used for error / destructive / negative states.",
@@ -71,6 +72,127 @@
       "700": { "$type": "color", "$value": "#b52922", "$description": "AA sobre blanco (6.35)." },
       "800": { "$type": "color", "$value": "#8c201a" },
       "900": { "$type": "color", "$value": "#6b1814" }
+=======
+    "color-grey-1": {
+      "$type": "color",
+      "$value": "#333333"
+    },
+    "color-grey-2": {
+      "$type": "color",
+      "$value": "#4f4f4f"
+    },
+    "color-grey-3": {
+      "$type": "color",
+      "$value": "#828282"
+    },
+    "color-grey-4": {
+      "$type": "color",
+      "$value": "#bdbdbd"
+    },
+    "color-grey-5": {
+      "$type": "color",
+      "$value": "#e0e0e0"
+    },
+    "color-neutral-0": {
+      "$type": "color",
+      "$value": "#f2f2f2"
+    },
+    "color-primary-500": {
+      "$type": "color",
+      "$value": "#003e70"
+    },
+    "color-primary-400": {
+      "$type": "color",
+      "$value": "#42689f"
+    },
+    "color-primary-700": {
+      "$type": "color",
+      "$value": "#002c50"
+    },
+    "color-disabled": {
+      "$type": "color",
+      "$value": "#d8e6ff"
+    },
+    "color-error": {
+      "$type": "color",
+      "$value": "#ff3b30"
+    },
+    "color-bg-white": {
+      "$type": "color",
+      "$value": "#f9f9f9"
+    },
+    "color-bg-primary": {
+      "$type": "color",
+      "$value": "#ebeef3"
+    },
+    "color-primary-50": {
+      "$type": "color",
+      "$value": "#e6ecf1"
+    },
+    "color-primary-100": {
+      "$type": "color",
+      "$value": "#b0c3d3"
+    },
+    "color-primary-200": {
+      "$type": "color",
+      "$value": "#8aa6bd"
+    },
+    "color-primary-300": {
+      "$type": "color",
+      "$value": "#547e9f"
+    },
+    "color-primary-600": {
+      "$type": "color",
+      "$value": "#003866"
+    },
+    "color-primary-800": {
+      "$type": "color",
+      "$value": "#00223e"
+    },
+    "color-primary-900": {
+      "$type": "color",
+      "$value": "#001a2f"
+    },
+    "color-secondary-600": {
+      "$type": "color",
+      "$value": "#e55a0e"
+    },
+    "color-secondary-700": {
+      "$type": "color",
+      "$value": "#c34d0c"
+    },
+    "color-secondary-800": {
+      "$type": "color",
+      "$value": "#a13f0a"
+    },
+    "color-secondary-900": {
+      "$type": "color",
+      "$value": "#7f3208"
+    },
+    "color-secondary-50": {
+      "$type": "color",
+      "$value": "#fef1e9"
+    },
+    "color-secondary-100": {
+      "$type": "color",
+      "$value": "#fce2d3"
+    },
+    "color-secondary-200": {
+      "$type": "color",
+      "$value": "#fac5a8"
+    },
+    "color-secondary-300": {
+      "$type": "color",
+      "$value": "#f7a87c"
+    },
+    "color-secondary-400": {
+      "$type": "color",
+      "$value": "#f58b51"
+    },
+    "color-warning-500": {
+      "$type": "color",
+      "$value": "#f59e0b"
+>>>>>>> 3c7b25a (feat(tokens): Figma DTCG pipeline with Desktop Bridge transport)
     }
   },
 

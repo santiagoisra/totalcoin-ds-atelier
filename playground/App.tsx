@@ -126,26 +126,21 @@ function ColorPalette() {
   const scales = [
     { group: "primary", shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
     { group: "secondary", shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+    { group: "neutral", shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+    { group: "green", shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+    { group: "red", shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
   ] as const;
-
-  const greys = [1, 2, 3, 4, 5] as const;
 
   return (
     <>
       {scales.map((scale) => (
         <SubCard key={scale.group} title={`color.${scale.group}`}>
           {scale.shades.map((s) => {
-            const key = `brand-color-${scale.group}-${s}` as keyof typeof cssVar;
+            const key = `color-${scale.group}-${s}` as keyof typeof cssVar;
             return <Swatch key={s} name={String(s)} value={cssVar[key]} />;
           })}
         </SubCard>
       ))}
-      <SubCard title="color.grey">
-        {greys.map((s) => {
-          const key = `brand-color-grey-${s}` as keyof typeof cssVar;
-          return <Swatch key={s} name={`grey-${s}`} value={cssVar[key]} />;
-        })}
-      </SubCard>
       <SubCard title="semantic / brand">
         <Swatch name="brand.primary" value={token.brand.primary} />
         <Swatch name="brand.primaryDark" value={token.brand.primaryDark} />
@@ -167,7 +162,7 @@ function ColorPalette() {
         <Swatch name="feedback.success" value={token.feedback.success} />
         <Swatch name="feedback.error" value={token.feedback.error} />
         <Swatch name="brand.primary" value={token.brand.primary} />
-        <Swatch name="feedback.warning" value={token.feedback.warning} />
+        <Swatch name="feedback.naranja" value={token.feedback.naranja} />
       </SubCard>
     </>
   );

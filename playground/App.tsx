@@ -161,8 +161,8 @@ function ColorPalette() {
       <SubCard title="semantic / feedback">
         <Swatch name="feedback.success" value={token.feedback.success} />
         <Swatch name="feedback.error" value={token.feedback.error} />
-        <Swatch name="focus.ring" value={token.focus.ring} />
-        <Swatch name="focus.ringError" value={token.focus.ringError} />
+        <Swatch name="brand.primary" value={token.brand.primary} />
+        <Swatch name="feedback.warning" value={token.feedback.warning} />
       </SubCard>
     </>
   );

@@ -74,7 +74,7 @@ export const RadioButton = forwardRef<HTMLInputElement, RadioButtonProps>(
           ref={ref}
           type="radio"
           id={id}
-          checked={checked}
+          {...("onChange" in rest ? { checked } : { defaultChecked: checked })}
           disabled={disabled}
           onFocus={(e) => { setFocused(true); onFocus?.(e); }}
           onBlur={(e) => { setFocused(false); onBlur?.(e); }}

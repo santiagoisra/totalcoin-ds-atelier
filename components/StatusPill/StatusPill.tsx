@@ -28,9 +28,9 @@ interface PillPalette {
 
 const palette: Record<Criticality, PillPalette> = {
   low:     { bg: `color-mix(in srgb, ${token.feedback.success} 15%, white)`, fg: token.feedback.success },
-  medium:  { bg: token.Brand.colorSecondary50,                                fg: token.Brand.colorSecondary500 },
-  high:    { bg: `color-mix(in srgb, ${token.feedback.error} 15%, white)`,   fg: token.feedback.error },
-  neutral: { bg: token.Brand.colorPrimary50,                                  fg: token.brand.primary },
+  medium:  { bg: `color-mix(in srgb, ${token.color.secondary["500"]} 15%, white)`, fg: token.color.secondary["500"] },
+  high:    { bg: `color-mix(in srgb, ${token.feedback.error} 15%, white)`,       fg: token.feedback.error },
+  neutral: { bg: `color-mix(in srgb, ${token.color.primary["500"]} 15%, white)`,  fg: token.brand.primary },
 };
 
 /**

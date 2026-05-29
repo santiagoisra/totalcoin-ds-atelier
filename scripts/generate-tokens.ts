@@ -17,10 +17,13 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { staticOverrides } from "../tailwind.static.ts";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const TOKENS_DIR = path.join(ROOT, "tokens", "source");
 const OUTPUT = path.join(ROOT, "components", "tokens.ts");
+const TAILWIND_OUTPUT = path.join(ROOT, "tailwind.config.ts");
 
 // --------------------------------------------------------------
 // Types
@@ -410,6 +413,241 @@ function emitShadow(val: Record<string, unknown> | Array<Record<string, unknown>
 }
 
 // --------------------------------------------------------------
+// emitTailwind — generates tailwind.config.ts from token tree
+// --------------------------------------------------------------
+
+/**
+ * Converts an atomic token's path + fallback value to a Tailwind theme value.
+ * For colors, the value is a CSS var reference; for dimensions it's the raw px.
+ */
+function tailwindValue(t: AtomicToken): string {
+  if (t.type === "color") {
+    return `var(--${t.cssVarName}, ${t.fallback})`;
+  }
+  return t.fallback;
+}
+
+/**
+ * Builds a nested plain-object string (for codegen) from a path array and value.
+ * E.g. ["primary", "500"] -> { primary: { "500": value } }
+ * Returns the accumulated result in the `out` map.
+ */
+function deepSet(
+  out: Map<string, unknown>,
+  segments: string[],
+  value: string,
+): void {
+  let cur: Map<string, unknown> = out;
+  for (let i = 0; i < segments.length - 1; i++) {
+    const seg = segments[i];
+    if (seg === undefined) continue;
+    if (!cur.has(seg)) {
+      cur.set(seg, new Map<string, unknown>());
+    }
+    const child = cur.get(seg);
+    if (!(child instanceof Map)) {
+      // Conflict: leaf exists where we expect a group — skip
+      return;
+    }
+    cur = child;
+  }
+  const last = segments[segments.length - 1];
+  if (last !== undefined) {
+    cur.set(last, value);
+  }
+}
+
+/** Quotes a JS object key if it requires quoting (hyphens, digits-first, etc.). */
+function quoteKey(key: string): string {
+  if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key)) return key;
+  return JSON.stringify(key);
+}
+
+/** Serializes a Map/string tree to a formatted JS object literal string. */
+function serializeMap(m: Map<string, unknown>, indentLevel: number): string {
+  const pad = "  ".repeat(indentLevel);
+  const inner = "  ".repeat(indentLevel + 1);
+  const parts: string[] = [];
+  for (const [key, val] of m) {
+    const k = quoteKey(key);
+    if (val instanceof Map) {
+      parts.push(`${inner}${k}: ${serializeMap(val, indentLevel + 1)}`);
+    } else {
+      parts.push(`${inner}${k}: ${JSON.stringify(val as string)}`);
+    }
+  }
+  return `{\n${parts.join(",\n")}\n${pad}}`;
+}
+
+/**
+ * Emitts the full tailwind.config.ts from the token tree.
+ * - Colors: all atomic tokens of type "color" (color.* and feedback.*)
+ * - Spacing: atomic tokens of type "dimension" where path starts with "size"
+ * - BorderRadius: atomic tokens where path starts with "radius"
+ * - BoxShadow: compound shadow tokens (shadow.* and glow.*)
+ * - FontSize: atomic tokens of type "dimension" where path starts with "typography.fontSize"
+ * - staticOverrides (fontFamily, content) deep-merged over generated theme.extend
+ */
+function emitTailwind(atomic: AtomicToken[], compound: CompoundToken[]): void {
+  // --- Colors ---
+  // Strip the leading "color" segment from primitive tokens so
+  // "color.primary.50" becomes "primary.50" in the Tailwind theme
+  // (matching the original hand-maintained structure).
+  // Semantic tokens (feedback.*, brand.*, text.*, etc.) keep their path as-is.
+  const colors = new Map<string, unknown>();
+  for (const t of atomic) {
+    if (t.type !== "color") continue;
+    const segs =
+      t.pathSegments[0] === "color"
+        ? t.pathSegments.slice(1)
+        : t.pathSegments;
+    if (segs.length === 0) continue;
+    deepSet(colors, segs, tailwindValue(t));
+  }
+
+  // --- Spacing (size.*) ---
+  const spacing = new Map<string, unknown>();
+  for (const t of atomic) {
+    if (t.type !== "dimension") continue;
+    if (t.pathSegments[0] !== "size") continue;
+    // Key: "ds-xs", "ds-s", etc. — use "ds-" prefix + last segment
+    const seg = t.pathSegments[t.pathSegments.length - 1];
+    if (seg !== undefined) {
+      spacing.set(`ds-${seg}`, t.fallback);
+    }
+  }
+
+  // --- BorderRadius (radius.*) ---
+  const borderRadius = new Map<string, unknown>();
+  for (const t of atomic) {
+    if (t.type !== "dimension") continue;
+    if (t.pathSegments[0] !== "radius") continue;
+    const seg = t.pathSegments[t.pathSegments.length - 1];
+    if (seg !== undefined) {
+      borderRadius.set(`ds-${seg}`, t.fallback);
+    }
+  }
+
+  // --- BoxShadow (compound shadow tokens) ---
+  const boxShadow = new Map<string, unknown>();
+  for (const c of compound) {
+    if (c.type !== "shadow") continue;
+    const segs = c.pathSegments;
+    // Key strategy: "shadow.xs" -> "ds-xs"; "glow.brand" -> "ds-ne" (compat) or "glow-brand"
+    let key: string;
+    if (segs[0] === "shadow" && segs.length === 2 && segs[1] !== undefined) {
+      key = `ds-${segs[1]}`;
+    } else if (segs[0] === "glow" && segs[1] !== undefined) {
+      key = `ds-${segs[1]}`;
+    } else {
+      key = segs.map((s, i) => (i === 0 ? s : s[0] !== undefined ? s[0].toUpperCase() + s.slice(1) : s)).join("");
+    }
+    boxShadow.set(key, emitShadow(c.value));
+  }
+
+  // --- FontSize (typography.fontSize.*) ---
+  // Build a map like ds-xs / ds-sm etc. from the existing ds-* naming convention.
+  // The token paths are "typography.fontSize.12", "typography.fontSize.14" etc.
+  // We map the pixel value to the existing ds-* alias names.
+  const pxToDsAlias: Record<string, string> = {
+    "12px": "ds-xs",
+    "14px": "ds-sm",
+    "16px": "ds-md",
+    "18px": "ds-lg",
+    "22px": "ds-xl",
+    "24px": "ds-2xl",
+    "30px": "ds-3xl",
+    "36px": "ds-4xl",
+  };
+
+  const fontSize = new Map<string, unknown>();
+  for (const t of atomic) {
+    if (t.type !== "dimension") continue;
+    if (t.pathSegments[0] !== "typography" || t.pathSegments[1] !== "fontSize") continue;
+    const alias = pxToDsAlias[t.fallback];
+    const key = alias ?? `ds-${t.pathSegments[t.pathSegments.length - 1]}`;
+    // Tailwind fontSize expects [size, { lineHeight }] tuple
+    fontSize.set(key, [t.fallback, { lineHeight: "1" }]);
+  }
+
+  // --- Static overrides (fontFamily, content) ---
+  const staticFontFamily = staticOverrides.theme.extend.fontFamily;
+  const content = staticOverrides.content;
+
+  // --- Build the config string ---
+  const lines: string[] = [];
+
+  lines.push(`// AUTO-GENERATED from tokens/source/*.tokens.json — do NOT edit by hand.`);
+  lines.push(`// To regenerate: npm run tokens:generate`);
+  lines.push(`// To add/change fontFamily or content globs, edit tailwind.static.ts instead.`);
+  lines.push(``);
+  lines.push(`import type { Config } from "tailwindcss";`);
+  lines.push(``);
+  lines.push(`export default {`);
+  lines.push(`  content: ${JSON.stringify(Array.from(content))},`);
+  lines.push(`  theme: {`);
+  lines.push(`    extend: {`);
+
+  // colors
+  lines.push(`      colors: ${indent(serializeMap(colors, 3), 3)},`);
+
+  // fontFamily (from static overrides)
+  lines.push(`      fontFamily: {`);
+  for (const [name, families] of Object.entries(staticFontFamily)) {
+    lines.push(`        ${name}: ${JSON.stringify(families)},`);
+  }
+  lines.push(`      },`);
+
+  // fontSize
+  if (fontSize.size > 0) {
+    lines.push(`      fontSize: ${indent(serializeFontSize(fontSize), 3)},`);
+  }
+
+  // spacing
+  if (spacing.size > 0) {
+    lines.push(`      spacing: ${indent(serializeMap(spacing, 3), 3)},`);
+  }
+
+  // borderRadius
+  if (borderRadius.size > 0) {
+    lines.push(`      borderRadius: ${indent(serializeMap(borderRadius, 3), 3)},`);
+  }
+
+  // boxShadow
+  if (boxShadow.size > 0) {
+    lines.push(`      boxShadow: ${indent(serializeMap(boxShadow, 3), 3)},`);
+  }
+
+  lines.push(`    },`);
+  lines.push(`  },`);
+  lines.push(`} satisfies Config;`);
+  lines.push(``);
+
+  fs.writeFileSync(TAILWIND_OUTPUT, lines.join("\n"), "utf-8");
+}
+
+/** Indents a multiline string by N levels (2-space each) after the first line. */
+function indent(str: string, levels: number): string {
+  const pad = "  ".repeat(levels);
+  return str.replace(/\n/g, `\n${pad}`);
+}
+
+/** Serializes a fontSize Map where values are [px, { lineHeight }] tuples. */
+function serializeFontSize(m: Map<string, unknown>): string {
+  const inner = "  ".repeat(4);
+  const parts: string[] = [];
+  for (const [key, val] of m) {
+    if (Array.isArray(val)) {
+      const [size, opts] = val as [string, Record<string, string>];
+      parts.push(`${inner}${JSON.stringify(key)}: [${JSON.stringify(size)}, { lineHeight: ${JSON.stringify(opts.lineHeight)} }]`);
+    } else {
+      parts.push(`${inner}${JSON.stringify(key)}: ${JSON.stringify(val as string)}`);
+    }
+  }
+  return `{\n${parts.join(",\n")}\n${"  ".repeat(3)}}`;
+}
+
+// --------------------------------------------------------------
 // Main
 // --------------------------------------------------------------
 
@@ -424,6 +662,9 @@ function main(): void {
   console.log(`  atomic tokens:   ${atomic.length}`);
   console.log(`  typography:      ${compound.filter((c) => c.type === "typography").length}`);
   console.log(`  shadow:          ${compound.filter((c) => c.type === "shadow").length}`);
+
+  emitTailwind(atomic, compound);
+  console.log(`Generated ${TAILWIND_OUTPUT}`);
 }
 
 main();

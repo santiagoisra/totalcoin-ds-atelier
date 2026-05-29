@@ -24,6 +24,9 @@ Thumbs.db
 .mcp.json
 skills-lock.json
 
+# Figma agent bridge (scratch dump)
+tokens/.figma-dump.json
+
 # Vercel
 .vercel/
 

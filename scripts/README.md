@@ -1,25 +1,157 @@
 # Scripts
 
-Automatizaciones para el sync bidireccional Figma <-> repo.
+Token sync automation for the Figma <-> Atelier bidirectional pipeline.
 
-| Script | Comando | Que hace |
-|--------|---------|----------|
-| `pull-tokens.ts` | `npm run tokens:pull` | Lee variables del Figma y regenera `tokens/source/*.tokens.json` |
-| `push-tokens.ts` | `npm run tokens:push` | Envia cambios locales de tokens hacia Figma |
+## Scripts overview
 
-## Requisitos
+| Script | npm command | What it does |
+|--------|-------------|--------------|
+| `pull-tokens.ts` | `npm run tokens:pull` | Reads `tokens/.figma-dump.json` and transforms it to DTCG `tokens/source/*.json` |
+| `push-tokens.ts` | `npm run tokens:push` | Stub — Figma Variables push is not implemented (no enterprise plan) |
+| `generate-tokens.ts` | `npm run tokens:generate` | Reads `tokens/source/*.json` and emits `components/tokens.ts` + `tailwind.config.ts` |
+| _(chain)_ | `npm run sync:figma` | Runs `tokens:pull` then `tokens:generate` in sequence |
 
-- Node 20+
-- `FIGMA_ACCESS_TOKEN` en el env (ver README raiz)
-- `FIGMA_FILE_KEY` en el env (por defecto `y3zmw15iLpdpYwLKSMCpP9`)
+---
 
-## Runtime
+## The agent-bridge pattern
 
-Se ejecutan con [`tsx`](https://github.com/privatenumber/tsx) — sin compilacion previa.
+### Why `pull-tokens.ts` does NOT call the Figma MCP directly
 
-## Pendiente
+The Figma MCP tools (`get_variable_defs`, `get_design_context`) require an
+**active interactive session** — they cannot be called from a Node.js process
+or CI pipeline. They only work in a live Claude/agent context where the Figma
+plugin is connected.
 
-Los stubs actuales describen el contrato pero no implementan la logica real. Cuando se habilite el MCP de Figma en la sesion, el flujo sera:
-1. `get-design-content` o equivalente para obtener variables
-2. Transformar a DTCG via helpers en `scripts/lib/`
-3. Escribir en `tokens/source/*.tokens.json`
+To keep `pull-tokens.ts` a pure, testable, CI-replayable Node transform, the
+design uses an **agent-bridge** pattern:
+
+```
+Agent (interactive MCP session)         Pure Node (CI-replayable)
+  get_variable_defs ─────┐
+                         ├──> tokens/.figma-dump.json ──> pull-tokens.ts ──> tokens/source/*.json
+  get_design_context ────┘   (written by agent, gitignored)   (transform + drift)
+```
+
+The agent is responsible for calling the MCP tools and **writing the dump
+file**. Once the dump exists on disk, the rest of the pipeline is pure Node
+and can run without any Figma connection.
+
+The dump file is listed in `.gitignore` — it is scratch data and must not be
+committed.
+
+### How to run a full sync
+
+**Step 1 (agent)** — Ask the AI agent to extract variables:
+
+> "Run `get_variable_defs` on Figma file `y3zmw15iLpdpYwLKSMCpP9`, then call
+> `get_design_context` on the typography frame, and write the combined result
+> to `tokens/.figma-dump.json` with this shape:
+> ```json
+> {
+>   "variables": <get_variable_defs output>,
+>   "textStyles": <get_design_context output>,
+>   "meta": { "fileKey": "y3zmw15iLpdpYwLKSMCpP9", "extractedAt": "<ISO timestamp>" }
+> }
+> ```"
+
+**Step 2 (terminal)** — Run the pipeline:
+
+```bash
+npm run sync:figma
+```
+
+This runs `pull-tokens.ts` (transforms dump → DTCG) then `generate-tokens.ts`
+(DTCG → `components/tokens.ts` + `tailwind.config.ts`).
+
+If the pull step fails (e.g. dump is missing), the generate step is NOT
+executed (standard `&&` short-circuit).
+
+### Interactive-only constraint
+
+The MCP step (Step 1) is **not automatable in CI**. There is no CI/CD hook
+that can invoke Figma MCP tools without a live agent session. Automated token
+updates require a human triggering the agent, or a dedicated CI runner with
+Figma plugin access (not available without Enterprise).
+
+---
+
+## CLI usage
+
+### tokens:pull (pull-tokens.ts)
+
+```bash
+# Use default dump path (tokens/.figma-dump.json)
+npm run tokens:pull
+
+# Use a custom dump path
+tsx scripts/pull-tokens.ts --dump path/to/custom-dump.json
+```
+
+**Outputs:**
+- One file per Figma Variable collection in `tokens/source/<collection>.tokens.json`
+- `tokens/source/typography.tokens.json` (if text styles are present in dump)
+- Drift lines to stdout: `[drift] color.secondary.500: #f37d3d → #f26e25`
+- Summary: `[pull] Done: N tokens written, M drifts detected`
+
+**Exit codes:**
+- `0` — success (even if drifts were detected — warn-and-write strategy)
+- `1` — dump file missing, malformed dump, or validation error
+
+### tokens:generate (generate-tokens.ts)
+
+```bash
+npm run tokens:generate
+```
+
+**Outputs:**
+- `components/tokens.ts` — flat `cssVar` map + nested `token` tree + `typographyStyle` + `shadowValue`
+- `tailwind.config.ts` — full config regenerated from tokens (do not edit by hand)
+
+This script runs **standalone** — it does not need Figma access and works
+entirely from the committed `tokens/source/*.json` files.
+
+---
+
+## Where the dump file lives
+
+```
+tokens/
+  .figma-dump.json   ← agent-written, gitignored scratch
+  source/
+    color.tokens.json
+    dimension.tokens.json
+    radius.tokens.json
+    semantic.tokens.json
+    shadow.tokens.json
+    typography.tokens.json
+```
+
+The dump is gitignored because:
+1. It contains raw Figma API data that may include internal IDs
+2. It is volatile — regenerated on every sync
+3. The source-of-truth for token values is `tokens/source/*.json`, not the dump
+
+---
+
+## Drift detection
+
+After pulling new values, `pull-tokens.ts` compares each token against the
+existing on-disk value. Drifts are printed as:
+
+```
+[drift] color.secondary.500: #f37d3d → #f26e25
+```
+
+The file is **always written** regardless of drift (warn-and-write). Review
+changes via `git diff tokens/source/` before committing.
+
+---
+
+## tailwind.config.ts — do not edit by hand
+
+The file `tailwind.config.ts` is fully auto-generated by `generate-tokens.ts`.
+It carries a `// AUTO-GENERATED` banner on line 1.
+
+To preserve static overrides (fontFamily, content globs), edit
+`tailwind.static.ts` instead. Those values are deep-merged into the generated
+output and survive every regeneration.

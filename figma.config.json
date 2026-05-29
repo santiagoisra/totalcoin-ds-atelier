@@ -4,7 +4,7 @@
     "include": ["components/**/*.tsx"],
     "exclude": ["**/node_modules/**", "**/dist/**"],
     "importPaths": {
-      "components/*": "@totalcoin/ds"
+      "components/*": "./components/*"
     }
   }
 }

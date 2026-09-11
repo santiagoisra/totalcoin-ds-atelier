@@ -50,6 +50,7 @@ const NAV_SECTIONS: NavSection[] = [
     title: "Moleculas",
     items: [
       { label: "ButtonStandard", href: "buttonstandard" },
+      { label: "ButtonIcon", href: "buttonicon" },
       { label: "TextField", href: "textfield" },
       { label: "Textarea", href: "textarea" },
       { label: "Alerta", href: "alerta" },

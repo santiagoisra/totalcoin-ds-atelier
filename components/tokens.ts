@@ -102,7 +102,7 @@ export const cssVar = {
   "text-on-primary": "var(--text-on-primary, #f2f2f2)",
   "icon-primary": "var(--icon-primary, #4f4f4f)",
   "bg-app": "var(--bg-app, #ebeef3)",
-  "bg-app-secondary": "var(--bg-app-secondary, #ffffff)",
+  "bg-app-secondary": "var(--bg-app-secondary, #ebeef3)",
   "bg-surface": "var(--bg-surface, #f9f9f9)",
   "bg-button": "var(--bg-button, #fefefe)",
   "bg-input": "var(--bg-input, #f2f2f2)",

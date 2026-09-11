@@ -66,7 +66,7 @@ export default {
         },
         bg: {
           app: "var(--bg-app, #ebeef3)",
-          "app-secondary": "var(--bg-app-secondary, #ffffff)",
+          "app-secondary": "var(--bg-app-secondary, #ebeef3)",
           surface: "var(--bg-surface, #f9f9f9)",
           button: "var(--bg-button, #fefefe)",
           input: "var(--bg-input, #f2f2f2)",

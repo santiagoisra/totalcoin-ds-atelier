@@ -413,6 +413,33 @@ const styles = StyleSheet.create({
 });`,
   },
 
+  buttonicon: {
+    react: `import { ButtonIcon, Icon } from "@totalcoin/ds";
+
+<ButtonIcon aria-label="Editar" onClick={handleEdit} />
+
+<ButtonIcon aria-label="Compartir" icon={<Icon name="share" />} />`,
+    tailwind: `<button
+  type="button"
+  aria-label="Editar"
+  className="inline-flex items-center justify-center size-[44px] p-[10px] rounded-xl bg-[#ebeef3] text-[#003e70]"
+>
+  <EditIcon className="size-6" aria-hidden="true" />
+</button>`,
+    reactNative: `import { Pressable, StyleSheet } from "react-native";
+
+<Pressable accessibilityLabel="Editar" onPress={handleEdit} style={styles.btn}>
+  <EditIcon width={24} height={24} color="#003e70" />
+</Pressable>
+
+const styles = StyleSheet.create({
+  btn: {
+    width: 44, height: 44, padding: 10, borderRadius: 12,
+    backgroundColor: "#ebeef3", alignItems: "center", justifyContent: "center",
+  },
+});`,
+  },
+
   textfield: {
     react: `import { TextField } from "@totalcoin/ds";
 import { useState } from "react";

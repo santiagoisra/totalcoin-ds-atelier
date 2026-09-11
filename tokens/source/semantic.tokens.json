@@ -93,8 +93,8 @@
     },
     "app-secondary": {
       "$type": "color",
-      "$value": "#ffffff",
-      "$description": "Figma: bg/app-secondary. Aun no confirmado — hipotesis: blanco puro."
+      "$value": "{color.primary.50}",
+      "$description": "Figma: bg/app-secondary = #ebeef3 (confirmado 2026-09-11 via get_variable_defs en Molecula / Boton Unico Simple 46290:673)."
     },
     "surface": {
       "$type": "color",

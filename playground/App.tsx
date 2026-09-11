@@ -5,6 +5,7 @@ import { CheckBox } from "../components/CheckBox/CheckBox.tsx";
 import { StatusPill, type Criticality } from "../components/StatusPill/StatusPill.tsx";
 import { StatusPillSelect } from "../components/StatusPill/StatusPillSelect.tsx";
 import { ButtonStandard } from "../components/ButtonStandard/ButtonStandard.tsx";
+import { ButtonIcon } from "../components/ButtonIcon/ButtonIcon.tsx";
 import { TextField } from "../components/TextField/TextField.tsx";
 import { Textarea } from "../components/Textarea/Textarea.tsx";
 import { Toggle } from "../components/Toggle/Toggle.tsx";
@@ -1008,6 +1009,29 @@ export function App() {
             </div>
           </SubCard>
           <CodeTabs snippets={snippets.buttonstandard} />
+        </Card>
+
+        <Card id="buttonicon" title="ButtonIcon" subtitle="Molecula / Boton Unico Simple (46290:673). Boton cuadrado 44x44 solo-icono, sin variantes. aria-label obligatorio.">
+          <SubCard title="Playground interactivo">
+            <PropsPlayground
+              controls={{
+                icon: { type: "enum", options: ["edit-square", "share", "copy", "trash", "download", "qrcode"], default: "edit-square" },
+                label: { type: "string", default: "Editar", placeholder: "aria-label" },
+              }}
+              preview={(v) => (
+                <ButtonIcon aria-label={v.label} icon={<Icon name={v.icon as never} size={24} />} />
+              )}
+              codeFor={(v) =>
+                v.icon === "edit-square"
+                  ? `<ButtonIcon aria-label="${v.label}" />`
+                  : `<ButtonIcon aria-label="${v.label}" icon={<Icon name="${v.icon}" />} />`
+              }
+            />
+          </SubCard>
+          <SubCard title="Default (igual al master de Figma)">
+            <ButtonIcon aria-label="Editar" />
+          </SubCard>
+          <CodeTabs snippets={snippets.buttonicon} />
         </Card>
 
         <Card id="textfield" title="TextField" subtitle="Caja de texto con label/sublabel/border/iconos. Era original del DS (Nunito).">

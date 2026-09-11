@@ -1,34 +1,95 @@
 {
   "$schema": "https://schemas.designtokens.org/draft/v0.0/design-tokens.json",
-  "$description": "Tokens from Figma collection \"Bordes y espaciado\" (mode: Default). File: y3zmw15iLpdpYwLKSMCpP9. Pulled on 2026-05-19.",
-  "XS": {
-    "$type": "number",
-    "$value": 4,
-    "$description": "Borde y espaciado S"
+  "$description": "Tokens from Figma collection \"Bordes y espaciado\" (mode: Default). File: y3zmw15iLpdpYwLKSMCpP9. Pulled on 2026-09-11.",
+  "size": {
+    "xs": {
+      "$type": "dimension",
+      "$value": "4px",
+      "$description": "Borde y espaciado S"
+    },
+    "s": {
+      "$type": "dimension",
+      "$value": "8px",
+      "$description": "Borde y espaciado S"
+    },
+    "md": {
+      "$type": "dimension",
+      "$value": "12px",
+      "$description": "Borde y espaciado S"
+    },
+    "l": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "Borde y espaciado S"
+    },
+    "xl": {
+      "$type": "dimension",
+      "$value": "24px",
+      "$description": "Borde y espaciado S"
+    },
+    "xxl": {
+      "$type": "dimension",
+      "$value": "36px",
+      "$description": "Borde y espaciado S"
+    }
   },
-  "S": {
-    "$type": "number",
-    "$value": 8,
-    "$description": "Borde y espaciado S"
+  "grid": {
+    "$description": "Configuracion de grid responsive. 3 breakpoints — celulares / tablets / desktop — cada uno con su numero de columnas, gutter (padding horizontal del container) y gap (separacion entre columnas).",
+    "mobile": {
+      "columns": {
+        "$type": "number",
+        "$value": 4
+      },
+      "gutter": {
+        "$type": "dimension",
+        "$value": "{size.l}",
+        "$description": "16px"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{size.md}",
+        "$description": "12px"
+      }
+    },
+    "tablet": {
+      "columns": {
+        "$type": "number",
+        "$value": 8
+      },
+      "gutter": {
+        "$type": "dimension",
+        "$value": "{size.xl}",
+        "$description": "24px"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{size.l}",
+        "$description": "16px"
+      }
+    },
+    "desktop": {
+      "columns": {
+        "$type": "number",
+        "$value": 12
+      },
+      "gutter": {
+        "$type": "dimension",
+        "$value": "{size.xxl}",
+        "$description": "36px"
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{size.xl}",
+        "$description": "24px"
+      }
+    }
   },
-  "MD": {
-    "$type": "number",
-    "$value": 12,
-    "$description": "Borde y espaciado S"
-  },
-  "L": {
-    "$type": "number",
-    "$value": 16,
-    "$description": "Borde y espaciado S"
-  },
-  "XL": {
-    "$type": "number",
-    "$value": 24,
-    "$description": "Borde y espaciado S"
-  },
-  "XXL": {
-    "$type": "number",
-    "$value": 36,
-    "$description": "Borde y espaciado S"
+  "borderWidth": {
+    "$description": "Grosores de borde. Valor mas usado detectado en componentes del DS.",
+    "default": {
+      "$type": "dimension",
+      "$value": "1px",
+      "$description": "Grosor estandar. Usado en todos los bordes comunes (cards, inputs, dividers)."
+    }
   }
 }

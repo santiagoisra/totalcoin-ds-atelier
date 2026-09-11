@@ -8,6 +8,7 @@
     "tokens:pull": "tsx scripts/pull-tokens.ts",
     "tokens:push": "tsx scripts/push-tokens.ts",
     "tokens:generate": "tsx scripts/generate-tokens.ts",
+    "tokens:test": "tsx --test scripts/lib/*.test.ts",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 5173",

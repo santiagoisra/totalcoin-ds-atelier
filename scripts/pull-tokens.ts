@@ -46,6 +46,7 @@ import { requireFigmaEnv } from "./lib/env.ts";
 import {
   transformFigmaToDTCG,
   collectionToFileName,
+  mergeManagedGroup,
   type FigmaVariablesResponse,
   type FigmaCollection,
   type FigmaVariable,
@@ -358,6 +359,13 @@ function countTokens(tree: DTCGTree): number {
   return count;
 }
 
+function readTokenTree(fileName: string): DTCGTree | null {
+  const filePath = path.join(TOKENS_DIR, fileName);
+  if (!fs.existsSync(filePath)) return null;
+  const { $schema: _s, $description: _d, ...tree } = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+  return tree as DTCGTree;
+}
+
 function diffAgainstDisk(
   fileName: string,
   newTree: DTCGTree,
@@ -482,8 +490,11 @@ async function main(): Promise<void> {
   console.log(`[pull] Recibido: ${collCount} colecciones, ${varCount} variables`);
   console.log();
 
-  // 2. Transformar a DTCG
-  const outputs = transformFigmaToDTCG(response, mode);
+  // 2. Transformar a DTCG (conservando grupos escritos a mano en archivos con grupo administrado)
+  const outputs = transformFigmaToDTCG(response, mode).map((o) => ({
+    ...o,
+    tree: mergeManagedGroup(readTokenTree(o.fileName), o.tree, o.managedGroup),
+  }));
 
   if (outputs.length === 0) {
     console.log("[pull] No se encontraron variables para transformar. Verifica las colecciones en Figma.");

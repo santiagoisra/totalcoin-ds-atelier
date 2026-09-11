@@ -110,13 +110,68 @@ const FIGMA_TYPE_TO_DTCG: Record<string, string> = {
 };
 
 // --------------------------------------------------------------
+// Output shape por archivo DTCG
+// --------------------------------------------------------------
+
+/**
+ * Cómo se proyecta una colección Figma sobre su archivo DTCG.
+ *
+ *   group            Figma solo es dueño de este grupo top-level: los tokens se anidan
+ *                    debajo y el resto del archivo (grupos escritos a mano) se preserva.
+ *   lowercaseKeys    Normaliza los segmentos del path a minúsculas ("XS" → "xs").
+ *   floatAsDimension FLOAT → $type "dimension" con unidad "px" en vez de "number" pelado.
+ */
+export interface FileShape {
+  group?: string;
+  lowercaseKeys?: boolean;
+  floatAsDimension?: boolean;
+}
+
+/**
+ * "Bordes y espaciado" es una escala plana (XS..XXL) compartida por spacing y radius.
+ * radius.tokens.json y grid la referencian como {size.*}, y components/tokens.ts
+ * expone token.size.*. grid y borderWidth viven en el mismo archivo pero no existen
+ * en Figma, así que el pull no los puede pisar.
+ */
+const FILE_SHAPES: Record<string, FileShape> = {
+  "dimension.tokens.json": { group: "size", lowercaseKeys: true, floatAsDimension: true },
+};
+
+function shapeForCollection(collection: FigmaCollection | undefined): FileShape {
+  if (!collection) return {};
+  const fileName = collectionToFileName(collection.name);
+  return (fileName && FILE_SHAPES[fileName]) || {};
+}
+
+/** Nombre de variable Figma ("brand/primary") → path DTCG según el shape del archivo. */
+export function figmaNameToPath(name: string, shape: FileShape): string[] {
+  const segments = name.split("/").map((s) => (shape.lowercaseKeys ? s.toLowerCase() : s));
+  return shape.group ? [shape.group, ...segments] : segments;
+}
+
+/**
+ * Combina el árbol que viene de Figma con lo que ya hay en disco.
+ * Si el archivo tiene un grupo administrado, solo ese grupo se reemplaza;
+ * el resto de los grupos top-level se conserva tal cual.
+ */
+export function mergeManagedGroup(
+  existing: DTCGTree | null,
+  tree: DTCGTree,
+  managedGroup: string | undefined,
+): DTCGTree {
+  if (!managedGroup || !existing) return tree;
+  const { [managedGroup]: _replaced, ...preserved } = existing;
+  return { ...tree, ...preserved };
+}
+
+// --------------------------------------------------------------
 // Resolve a Figma mode value to DTCG $value
 // --------------------------------------------------------------
 
 function resolveModeValue(
   raw: FigmaModeValue,
   variables: Record<string, FigmaVariable>,
-  modeId: string,
+  collections: Record<string, FigmaCollection>,
 ): unknown {
   // Alias → DTCG reference {collection.group.token}
   if (typeof raw === "object" && raw !== null && "type" in raw && raw.type === "VARIABLE_ALIAS") {
@@ -126,9 +181,9 @@ function resolveModeValue(
       console.warn(`  [warn] Alias apunta a variable inexistente: ${alias.id} — omitiendo token.`);
       return null; // caller will skip this token
     }
-    // Figma names usan "/" como separador → DTCG usa "." en las referencias
-    const refPath = targetVar.name.replace(/\//g, ".");
-    return `{${refPath}}`;
+    // La referencia usa el mismo path con el que se escribió el token destino
+    const targetShape = shapeForCollection(collections[targetVar.variableCollectionId]);
+    return `{${figmaNameToPath(targetVar.name, targetShape).join(".")}}`;
   }
 
   // Color → hex
@@ -273,6 +328,8 @@ export interface CollectionOutput {
   fileName: string;
   collectionName: string;
   tree: DTCGTree;
+  /** Grupo top-level que Figma administra; el resto del archivo se preserva al escribir. */
+  managedGroup: string | undefined;
   modeName: string;
   stats: { total: number; aliases: number; colors: number; numbers: number; strings: number; booleans: number };
 }
@@ -298,6 +355,8 @@ export function transformFigmaToDTCG(
     );
 
     if (collVars.length === 0) continue;
+
+    const shape = FILE_SHAPES[baseFileName] ?? {};
 
     // --- Step 2: determine which modes to process ---
     const modesToProcess = targetMode
@@ -325,7 +384,7 @@ export function transformFigmaToDTCG(
           continue;
         }
 
-        const resolved = resolveModeValue(rawValue, variables, mode.id);
+        let resolved = resolveModeValue(rawValue, variables, variableCollections);
         if (resolved === null) continue; // skip unresolvable aliases
 
         const isAlias =
@@ -343,10 +402,16 @@ export function transformFigmaToDTCG(
 
         // Figma usa "/" como separador de grupos en el nombre
         // ej: "brand/primary" → segments ["brand", "primary"]
-        const segments = variable.name.split("/");
+        const segments = figmaNameToPath(variable.name, shape);
+
+        let outputType = dtcgType;
+        if (shape.floatAsDimension && variable.resolvedType === "FLOAT") {
+          outputType = "dimension";
+          if (typeof resolved === "number") resolved = `${resolved}px`;
+        }
 
         const token: DTCGToken = {
-          $type: dtcgType,
+          $type: outputType,
           $value: resolved,
         };
         if (variable.description) {
@@ -362,6 +427,7 @@ export function transformFigmaToDTCG(
         fileName,
         collectionName: collection.name,
         tree,
+        managedGroup: shape.group,
         modeName: mode.name,
         stats,
       });
